@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('caption');
             $table->string('tanggal');
             $table->string('gambar');
-            $table->string('url');
             $table->timestamps();
         });
     }

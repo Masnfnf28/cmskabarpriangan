@@ -4,33 +4,50 @@ namespace App\Http\Controllers;
 
 use App\Models\Konten;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image as InterventionImage; // Pastikan fasad Image yang benar di-import
+use Symfony\Component\HttpFoundation\File\UploadedFile as FileUploadedFile;
 
 class KontenController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         try {
-            $konten = Konten::paginate(6);
-            return view('page.konten.index')->with([
-                'konten' => $konten,
+            $query = Konten::query();
+
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('judul', 'like', "%{$search}%")
+                        ->orWhere('caption', 'like', "%{$search}%");
+                });
+            }
+
+            $konten = $query->orderBy('tanggal', 'desc')
+                ->paginate(6)
+                ->withQueryString();
+
+            // Data untuk Chart.js (ini sudah bagus)
+            $chartData = Konten::selectRaw('DATE(tanggal) as tgl, COUNT(*) as total')
+                ->groupBy('tgl')
+                ->orderBy('tgl', 'asc')
+                ->pluck('total', 'tgl');
+
+            return view('page.konten.index', [
+                'konten'      => $konten,
+                'chartLabels' => $chartData->keys(),
+                'chartData'   => $chartData->values(),
             ]);
         } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
+            Log::error('Error loading konten: ' . $e->getMessage());
+            return view('error.index')->with('error', 'Terjadi kesalahan saat memuat konten.');
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -38,110 +55,87 @@ class KontenController extends Controller
      */
     public function store(Request $request)
     {
-
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
+        $validatedData = $request->validate([
+            'judul'   => 'required|string|max:255',
             'caption' => 'required|string',
             'tanggal' => 'required|date',
-            'url' => 'required|string',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // Aturan validasi gambar diubah menjadi array
+            'gambar'  => [
+                'required',
+                'image',
+                'mimes:jpeg,png,jpg,gif',
+                'max:1024',
+                // Aturan kustom untuk validasi orientasi landscape
+                function (string $attribute, FileUploadedFile $value, \Closure $fail) {
+                    $imageSize = getimagesize($value->getRealPath());
+                    $width = $imageSize[0];
+                    $height = $imageSize[1];
+
+                    if ($height >= $width) {
+                        $fail('Gambar harus berorientasi landscape (lebar harus lebih besar dari tinggi).');
+                    }
+                },
+            ],
         ]);
 
-        // 2. Cek apakah ada file gambar yang di-upload
         if ($request->hasFile('gambar')) {
-            // 3. Simpan gambar ke storage/app/public/konten
-            // dan simpan path-nya ke dalam variabel $path
             $path = $request->file('gambar')->store('konten', 'public');
-            
-            // 4. Masukkan path gambar ke dalam data yang akan disimpan
-            $validated['gambar'] = $path;
+            $validatedData['gambar'] = $path;
         }
 
-        // 5. Simpan semua data ke database
-        Konten::create($validated);
+        Konten::create($validatedData);
 
-        return redirect()->route('konten.index')->with('success', 'Konten berhasil ditambahkan!');
-    
-        // try {
-        //     $data = [
-        //         'judul' => $request->input('judul'),
-        //         'caption' => $request->input('caption'),
-        //         'tanggal' => $request->input('tanggal'),
-        //         'gambar' => $request->input('gambar'),
-        //         'url' => $request->input('url'),
-        //     ];
-        //     Konten::create($data);
-
-        //     return redirect()
-        //         ->route('konten.index')
-        //         ->with('message_insert', 'Data konten Sudah ditambahkan');
-        // } catch (\Exception $e) {
-        //     echo "<script>console.error('PHP Error: " .
-        //         addslashes($e->getMessage()) . "');</script>";
-        //     return view('error.index');
-        // }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        return redirect()->route('konten.index')->with('success', 'Konten berhasil ditambahkan.');
     }
 
     /**
      * Update the specified resource in storage.
+     * PENINGKATAN: Menggunakan Route Model Binding (Konten $konten)
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Konten $konten)
     {
-        // try {
-        //     $data = [
-        //         'judul' => $request->input('judul'),
-        //         'caption' => $request->input('caption'),
-        //         'tanggal' => $request->input('tanggal'),
-        //         'gambar' => $request->input('gambar'),
-        //         'url' => $request->input('url'),
-        //     ];
+        $validatedData = $request->validate([
+            'judul'   => 'required|string|max:255',
+            'caption' => 'required|string',
+            'tanggal' => 'required|date',
+            'gambar'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024', // Gambar tidak wajib diisi saat update
+        ]);
 
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada untuk menghemat ruang penyimpanan
+            if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
+                Storage::disk('public')->delete($konten->gambar);
+            }
 
-        //     $datas = Konten::findOrFail($id);
-        //     $datas->update($data);
-        //     return redirect()
-        //         ->route('konten.index')
-        //         ->with('message_insert', 'Data Konten Sudah ditambahkan');
-        // } catch (\Exception $e) {
-        //     echo "<script>console.error('PHP Error: " .
-        //         addslashes($e->getMessage()) . "');</script>";
-        //     return view('error.index');
-        // }
+            // Simpan gambar baru dan perbarui path-nya
+            $path = $request->file('gambar')->store('konten', 'public');
+            $validatedData['gambar'] = $path;
+        }
+
+        $konten->update($validatedData);
+
+        return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
+     * PENINGKATAN: Menggunakan Route Model Binding (Konten $konten)
      */
-    public function destroy(string $id)
+    public function destroy(Konten $konten)
     {
         try {
-            $data = Konten::findOrFail($id);
-            $data->delete();
-            return back()->with('message_delete', 'Data Konten Sudah dihapus');
+            // Hapus file gambar dari storage sebelum menghapus record dari DB
+            if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
+                Storage::disk('public')->delete($konten->gambar);
+            }
 
-            return redirect()
-                ->route('Konten.index')
-                ->with('message_insert', 'Data Konten Sudah ditambahkan');
+            $konten->delete();
+
+            // Mengembalikan respons JSON, cocok untuk request via Axios/AJAX
+            return response()->json(['message' => 'Konten berhasil dihapus!']);
         } catch (\Exception $e) {
-            echo "<script>console.error('PHP Error: " .
-                addslashes($e->getMessage()) . "');</script>";
-            return view('error.index');
+            Log::error('Error deleting konten: ' . $e->getMessage());
+            return response()->json(['message' => 'Terjadi kesalahan saat menghapus konten.'], 500);
         }
     }
 }

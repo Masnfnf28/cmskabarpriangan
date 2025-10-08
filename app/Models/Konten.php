@@ -14,7 +14,6 @@ class Konten extends Model
         'caption',
         'tanggal',
         'gambar',
-        'url',
     ];
 
     protected $table = 'konten';
