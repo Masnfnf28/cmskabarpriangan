@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Konten;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -12,31 +14,41 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        {
-         // Total semua konten
+        // 1. Menghitung total semua konten
         $totalKonten = Konten::count();
 
-        // Hitung jumlah konten per bulan (tahun berjalan)
+        // 2. Mengambil rekap jumlah konten per bulan untuk tahun ini
         $kontenPerBulan = Konten::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as jumlah')
             ->whereYear('tanggal', Carbon::now()->year)
             ->groupBy('bulan')
-            ->pluck('jumlah', 'bulan')
-            ->toArray();
+            ->pluck('jumlah', 'bulan');
 
-        // Label bulan (untuk grafik)
-        $bulanLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        // 3. Definisikan palet warna untuk grafik dan laporan
+        $colors = [
+            '#2563EB', '#16A34A', '#F59E0B', '#EF4444', '#8B5CF6', '#0EA5E9',
+            '#14B8A6', '#F43F5E', '#A855F7', '#FB923C', '#10B981', '#3B82F6'
+        ];
 
-        // Data konten (agar urut dari Jan–Des)
-        $dataKonten = [];
-        for ($i = 1; $i <= 12; $i++) {
-            $dataKonten[] = $kontenPerBulan[$i] ?? 0;
-        }
+        // 4. Definisikan label nama bulan dalam Bahasa Indonesia
+        $bulanLabels = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        
+        // 5. Siapkan data 12 bulan, isi dengan 0 jika tidak ada konten
+        $dataPerBulan = collect(range(1, 12))->map(function ($bulan) use ($kontenPerBulan) {
+            return $kontenPerBulan->get($bulan, 0);
+        })->values()->all();
 
-        // Kirim data ke view
-        return view('page.dashboard', compact('totalKonten', 'bulanLabels', 'dataKonten'));
-        }
+        // 6. Kirim semua data yang sudah siap ke view
+        return view('page.dashboard.index', [
+            'totalKonten'  => $totalKonten,
+            'bulanLabels'  => $bulanLabels,
+            'dataPerBulan' => $dataPerBulan,
+            'colors'       => $colors,
+        ]);
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */

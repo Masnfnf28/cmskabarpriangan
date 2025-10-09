@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\KontenController;
+use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Intervention\Image\Facades\InterventionImage;
 use App\Models\Konten;
 use Carbon\Carbon;
 
-Route::get('/', function () {
-    return redirect('/dashboard');
-});
+Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index']);
 
 // 🧭 DASHBOARD DENGAN GRAFIK
 Route::get('/dashboard', function () {
@@ -35,6 +35,10 @@ Route::get('/dashboard', function () {
     return view('page.dashboard.index', compact('totalKonten', 'dataPerBulan', 'bulanLabels'));
 })->name('dashboard')->middleware(['auth', 'verified']);
 
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard')
+    ->middleware(['auth', 'verified']);
+Route::get('/', [WelcomeController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

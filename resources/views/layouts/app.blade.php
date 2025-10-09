@@ -12,49 +12,61 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    {{-- icon --}}
+    {{-- CSS Icons --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/2.5.1/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/2.5.1/uicons-solid-straight/css/uicons-solid-straight.css'>
-
-    {{-- Select2 --}}
+    {{-- Select2 CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
-    {{-- Flsticon --}}
-    <link rel='stylesheet'
-        href='https://cdn-uicons.flaticon.com/2.6.0/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    {{-- TinyMCE Script dengan API Key Anda --}}
+    <script src="https://cdn.tiny.cloud/1/sa3z3p4epveoexl0yk9zrazjuh2fj6gvsl2rfqr1ch96r341/tinymce/8/tinymce.min.js" referrerpolicy="origin" crossorigin="anonymous"></script>
 
-    {{-- Jquery --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-
-    <!-- Scripts -->
+    <!-- Scripts Laravel (Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- Custom CSS untuk Select2 agar sesuai tema --}}
     <style>
+        /* General styling for Select2 container */
         .select2-container .select2-selection--single {
             width: 100% !important;
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db !important;
+            background-color: #f9fafb; /* bg-gray-50 */
+            border: 1px solid #d1d5db !important; /* border-gray-300 */
             padding: 0.5rem 0.75rem;
             font-size: 0.875rem;
             height: 43px;
             border-radius: 0.4rem;
-            color: #1f2937;
+            color: #1f2937; /* text-gray-800 */
         }
-
+        /* Dark mode styling for Select2 */
+        .dark .select2-container .select2-selection--single {
+            background-color: #374151; /* dark:bg-gray-700 */
+            border-color: #4b5563 !important; /* dark:border-gray-600 */
+            color: #f9fafb; /* dark:text-gray-50 */
+        }
+        .dark .select2-selection__rendered {
+            color: #f9fafb !important; /* dark:text-gray-50 */
+        }
+        /* Dropdown styling */
+        .select2-container--open .select2-dropdown {
+            background-color: #fff;
+            border: 1px solid #d1d5db;
+        }
+        .dark .select2-container--open .select2-dropdown {
+            background-color: #1f2937; /* dark:bg-gray-800 */
+            border-color: #4b5563; /* dark:border-gray-600 */
+        }
+        .dark .select2-results__option {
+            color: #f9fafb; /* dark:text-gray-50 */
+        }
+        .dark .select2-search__field {
+            background-color: #374151; /* dark:bg-gray-700 */
+            color: #f9fafb; /* dark:text-gray-50 */
+        }
+        /* Arrow and text positioning */
         .select2-container .select2-selection--single .select2-selection__arrow {
             top: 20% !important;
             right: 8px;
         }
-
         .select2-container .select2-selection--single .select2-selection__rendered {
             font-size: 14px !important;
             top: -2px;
@@ -62,58 +74,7 @@
             position: relative;
             color: #1f2937;
         }
-
-        .select2-search__field {
-            font-size: 14px !important;
-            border-radius: 0.5rem;
-        }
-
-        .select2-results {
-            font-size: 14px !important;
-            border-radius: 0px 10px 0px 10px;
-        }
     </style>
-
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <style>
-        .select2-container .select2-selection--single {
-            width: 100% !important;
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db !important;
-            padding: 0.5rem 0.75rem;
-            font-size: 0.875rem;
-            height: 43px;
-            border-radius: 0.4rem;
-            color: #1f2937;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__arrow {
-            top: 20% !important;
-            right: 8px;
-        }
-
-        .select2-container .select2-selection--single .select2-selection__rendered {
-            font-size: 14px !important;
-            top: -2px;
-            left: -6px;
-            position: relative;
-            color: #1f2937;
-        }
-
-        .select2-search__field {
-            font-size: 14px !important;
-            border-radius: 0.5rem;
-        }
-
-        .select2-results {
-            font-size: 14px !important;
-            border-radius: 0px 10px 0px 10px;
-        }
-    </style>
-
 </head>
 
 <body class="font-sans antialiased">
@@ -132,38 +93,33 @@
         <!-- Page Content -->
         <main>
             <div class="px-3 py-3">
-                {{-- @if (session()->has('success'))
-                    <x-toast-success :message="session('success')"></x-toast-success>
-                @elseif(session()->has('error'))
-                    <x-toast-error :message="session('error')"></x-toast-error>
-                @elseif(session()->has('warning'))
-                    <x-toast-warning :message="session('warning')"></x-toast-warning>
-                @endif --}}
-
                 {{ $slot }}
             </div>
         </main>
     </div>
+
+    {{-- Bagian Script di Akhir Body untuk performa lebih baik --}}
+    
+    {{-- Jquery (diperlukan oleh Select2) --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
+    {{-- Select2 JS --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    {{-- Inisialisasi Umum untuk Select2 --}}
     <script>
-        // In your Javascript (external .js resource or <script> tag)
-        $(".js-example-placeholder-single").select2({
-            placeholder: "Pilih...",
-            allowClear: true,
-            width: '100%'
+        $(document).ready(function() {
+            // Inisialisasi semua elemen dengan kelas ini
+            $(".js-example-placeholder-single").select2({
+                placeholder: "Pilih...",
+                allowClear: true,
+                width: '100%'
+            });
         });
     </script>
+    
+    {{-- Tempat untuk script dari halaman lain (seperti inisialisasi TinyMCE) --}}
     @stack('scripts')
 </body>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    // In your Javascript (external .js resource or <script> tag)
-    $(".js-example-placeholder-single").select2({
-        placeholder: "Pilih...",
-        allowClear: true,
-        width: '100%'
-    });
-</script>
-@stack('scripts')
-
 </html>
+

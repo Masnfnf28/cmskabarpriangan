@@ -4,138 +4,110 @@ namespace App\Http\Controllers;
 
 use App\Models\Konten;
 use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image as InterventionImage; // Pastikan fasad Image yang benar di-import
-use Symfony\Component\HttpFoundation\File\UploadedFile as FileUploadedFile;
 
 class KontenController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Menampilkan daftar konten.
      */
     public function index(Request $request)
     {
-        try {
-            $query = Konten::query();
+        $query = Konten::query()->latest();
 
-            if ($request->filled('search')) {
-                $search = $request->search;
-                $query->where(function ($q) use ($search) {
-                    $q->where('judul', 'like', "%{$search}%")
-                        ->orWhere('caption', 'like', "%{$search}%");
-                });
-            }
-
-            $konten = $query->orderBy('tanggal', 'desc')
-                ->paginate(6)
-                ->withQueryString();
-
-            // Data untuk Chart.js (ini sudah bagus)
-            $chartData = Konten::selectRaw('DATE(tanggal) as tgl, COUNT(*) as total')
-                ->groupBy('tgl')
-                ->orderBy('tgl', 'asc')
-                ->pluck('total', 'tgl');
-
-            return view('page.konten.index', [
-                'konten'      => $konten,
-                'chartLabels' => $chartData->keys(),
-                'chartData'   => $chartData->values(),
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error loading konten: ' . $e->getMessage());
-            return view('error.index')->with('error', 'Terjadi kesalahan saat memuat konten.');
+        if ($request->filled('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
         }
+
+        $konten = $query->paginate(8)->withQueryString();
+
+        return view('page.konten.index', compact('konten'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menyimpan konten baru.
      */
     public function store(Request $request)
     {
+        // Validasi dasar yang disederhanakan
         $validatedData = $request->validate([
             'judul'   => 'required|string|max:255',
-            'caption' => 'required|string',
+            'caption' => 'nullable|string',
             'tanggal' => 'required|date',
-            // Aturan validasi gambar diubah menjadi array
-            'gambar'  => [
-                'required',
-                'image',
-                'mimes:jpeg,png,jpg,gif',
-                'max:1024',
-                // Aturan kustom untuk validasi orientasi landscape
-                function (string $attribute, FileUploadedFile $value, \Closure $fail) {
-                    $imageSize = getimagesize($value->getRealPath());
-                    $width = $imageSize[0];
-                    $height = $imageSize[1];
-
-                    if ($height >= $width) {
-                        $fail('Gambar harus berorientasi landscape (lebar harus lebih besar dari tinggi).');
-                    }
-                },
-            ],
+            'gambar'  => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Maks 2MB
         ]);
 
-        if ($request->hasFile('gambar')) {
+        try {
+            // 1. Simpan gambar
             $path = $request->file('gambar')->store('konten', 'public');
-            $validatedData['gambar'] = $path;
+            
+            // 2. Siapkan data untuk disimpan ke database
+            $dataToCreate = $validatedData;
+            $dataToCreate['gambar'] = $path;
+
+            // 3. Simpan data ke database
+            Konten::create($dataToCreate);
+
+            // 4. Kembali dengan pesan sukses
+            return redirect()->route('konten.index')->with('success', 'Konten baru berhasil ditambahkan!');
+
+        } catch (\Exception $e) {
+            // Jika terjadi error, catat di log dan kembali dengan pesan error
+            Log::error('GAGAL MENYIMPAN KONTEN: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan internal saat menyimpan. Silakan periksa log.')->withInput();
         }
-
-        Konten::create($validatedData);
-
-        return redirect()->route('konten.index')->with('success', 'Konten berhasil ditambahkan.');
     }
 
     /**
-     * Update the specified resource in storage.
-     * PENINGKATAN: Menggunakan Route Model Binding (Konten $konten)
+     * Memperbarui konten.
      */
     public function update(Request $request, Konten $konten)
     {
         $validatedData = $request->validate([
             'judul'   => 'required|string|max:255',
-            'caption' => 'required|string',
+            'caption' => 'nullable|string',
             'tanggal' => 'required|date',
-            'gambar'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024', // Gambar tidak wajib diisi saat update
+            'gambar'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar tidak wajib saat update
         ]);
+        
+        try {
+            $dataToUpdate = $request->except('gambar');
 
-        if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada untuk menghemat ruang penyimpanan
-            if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
-                Storage::disk('public')->delete($konten->gambar);
+            if ($request->hasFile('gambar')) {
+                // Hapus gambar lama jika ada
+                if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
+                    Storage::disk('public')->delete($konten->gambar);
+                }
+                // Simpan gambar baru
+                $path = $request->file('gambar')->store('konten', 'public');
+                $dataToUpdate['gambar'] = $path;
             }
 
-            // Simpan gambar baru dan perbarui path-nya
-            $path = $request->file('gambar')->store('konten', 'public');
-            $validatedData['gambar'] = $path;
+            $konten->update($dataToUpdate);
+
+            return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui.');
+        } catch (\Exception $e) {
+            Log::error('GAGAL MEMPERBARUI KONTEN: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan internal saat memperbarui. Silakan periksa log.')->withInput();
         }
-
-        $konten->update($validatedData);
-
-        return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui!');
     }
 
     /**
-     * Remove the specified resource from storage.
-     * PENINGKATAN: Menggunakan Route Model Binding (Konten $konten)
+     * Menghapus konten.
      */
     public function destroy(Konten $konten)
     {
         try {
-            // Hapus file gambar dari storage sebelum menghapus record dari DB
             if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
                 Storage::disk('public')->delete($konten->gambar);
             }
-
             $konten->delete();
-
-            // Mengembalikan respons JSON, cocok untuk request via Axios/AJAX
-            return response()->json(['message' => 'Konten berhasil dihapus!']);
+            return redirect()->route('konten.index')->with('success', 'Konten berhasil dihapus.');
         } catch (\Exception $e) {
-            Log::error('Error deleting konten: ' . $e->getMessage());
-            return response()->json(['message' => 'Terjadi kesalahan saat menghapus konten.'], 500);
+            Log::error('GAGAL MENGHAPUS KONTEN: ' . $e->getMessage());
+            return redirect()->route('konten.index')->with('error', 'Terjadi kesalahan saat menghapus konten.');
         }
     }
 }
+

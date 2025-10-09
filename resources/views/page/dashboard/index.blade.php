@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2">
+        <h2
+            class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2">
             <span>📈</span> Dashboard Analitik Dinamis
         </h2>
     </x-slot>
@@ -10,35 +11,58 @@
 
             {{-- RINGKASAN STATISTIK --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div class="bg-gradient-to-br from-blue-600 to-indigo-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                <div
+                    class="bg-gradient-to-br from-blue-600 to-indigo-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
                     <p class="text-lg opacity-90 mb-1">Total Konten</p>
                     <h1 class="text-4xl font-bold">{{ $totalKonten }}</h1>
                 </div>
-                <div class="bg-gradient-to-br from-emerald-500 to-green-400 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                <div
+                    class="bg-gradient-to-br from-emerald-500 to-green-400 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
                     <p class="text-lg opacity-90 mb-1">Tahun Aktif</p>
                     <h1 class="text-4xl font-bold">{{ now()->year }}</h1>
                 </div>
-                <div class="bg-gradient-to-br from-fuchsia-500 to-pink-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
-                    <p class="text-lg opacity-90 mb-1">Total Aktivitas Bulanan</p>
+                <div
+                    class="bg-gradient-to-br from-fuchsia-500 to-pink-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                    <p class="text-lg opacity-90 mb-1">Total Aktivitas Tahunan</p>
                     <h1 class="text-4xl font-bold">{{ collect($dataPerBulan)->sum() }}</h1>
                 </div>
             </div>
 
-            {{-- GRAFIK DONUT DINAMIS --}}
+            {{-- GRAFIK & LAPORAN BULANAN --}}
             <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 transition-all duration-300">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                         🥧 Distribusi Konten per Bulan
                     </h3>
-                    <span class="text-gray-500 dark:text-gray-400 text-sm">
-                        Tahun {{ now()->year }}
-                    </span>
                 </div>
 
-                <div class="relative w-full h-[300px] sm:h-[400px] flex justify-center items-center">
-                    <canvas id="kontenChart"></canvas>
-                    <div id="chartCenterLabel"
-                         class="absolute text-center text-2xl font-semibold text-gray-700 dark:text-gray-200 pointer-events-none">
+                <div class="flex flex-col sm:flex-row gap-8 items-center">
+                    {{-- Kolom untuk Grafik Donut --}}
+                    <div class="relative w-full sm:w-2/3 h-[300px] sm:h-[400px]">
+                        <canvas id="kontenChart"></canvas>
+                        <div id="chartCenterLabel"
+                            class="absolute inset-0 flex flex-col items-center justify-center text-center text-2xl font-semibold text-gray-700 dark:text-gray-200 pointer-events-none">
+                        </div>
+                    </div>
+
+                    {{-- Kolom untuk Laporan Bulanan (PENGGANTI LEGENDA) --}}
+                    <div class="w-full sm:w-1/3 space-y-3">
+                        <h4 class="font-semibold text-gray-600 dark:text-gray-300 border-b dark:border-gray-600 pb-2">
+                            Laporan Bulan {{ now()->year }}</h4>
+
+                        @foreach ($bulanLabels as $index => $label)
+                            <div class="flex justify-between items-center text-sm py-1">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3 h-3 rounded-full"
+                                        style="background-color: {{ $colors[$index] }}"></span>
+                                    <span class="text-gray-700 dark:text-gray-200">{{ $label }}</span>
+                                </div>
+                                <span class="font-bold text-gray-800 dark:text-gray-100">
+                                    {{ $dataPerBulan[$index] }} <span
+                                        class="font-normal text-xs text-gray-500">konten</span>
+                                </span>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -47,68 +71,57 @@
     </div>
 
     {{-- SCRIPT CHART.JS --}}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        const ctx = document.getElementById('kontenChart').getContext('2d');
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const ctx = document.getElementById('kontenChart').getContext('2d');
 
-        const bulanLabels = @json($bulanLabels);
-        const dataKonten = @json($dataPerBulan);
+                const bulanLabels = @json($bulanLabels);
+                const dataKonten = @json($dataPerBulan);
+                const colors = @json($colors);
 
-        const colors = [
-            '#2563EB', '#16A34A', '#F59E0B', '#EF4444', '#8B5CF6', '#0EA5E9',
-            '#14B8A6', '#F43F5E', '#A855F7', '#FB923C', '#10B981', '#3B82F6'
-        ];
-
-        const kontenChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: bulanLabels,
-                datasets: [{
-                    label: 'Jumlah Konten',
-                    data: dataKonten,
-                    backgroundColor: colors,
-                    borderWidth: 2,
-                    borderColor: '#fff',
-                    hoverOffset: 18
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        position: window.innerWidth < 640 ? 'bottom' : 'right',
-                        labels: {
-                            color: '#374151',
-                            font: { size: 13, family: 'Inter, sans-serif' },
-                            usePointStyle: true,
-                            pointStyle: 'circle',
-                            padding: 15
-                        }
+                const kontenChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: bulanLabels,
+                        datasets: [{
+                            label: 'Jumlah Konten',
+                            data: dataKonten,
+                            backgroundColor: colors,
+                            borderWidth: 2,
+                            borderColor: document.documentElement.classList.contains('dark') ?
+                                '#1f2937' : '#fff',
+                            hoverOffset: 18
+                        }]
                     },
-                    tooltip: {
-                        callbacks: {
-                            label: (ctx) => `${ctx.label}: ${ctx.parsed} konten`
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        cutout: '70%',
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: (ctx) => `${ctx.label}: ${ctx.parsed} konten`
+                                }
+                            }
                         }
                     }
+                });
+
+                function updateCenterLabel() {
+                    const total = dataKonten.reduce((a, b) => a + b, 0);
+                    document.getElementById('chartCenterLabel').innerHTML = `
+                    <span class="block text-sm opacity-70">Total Konten</span>
+                    <span class="text-4xl font-bold">${total}</span>
+                `;
                 }
-            }
-        });
 
-        function updateCenterLabel() {
-            const total = dataKonten.reduce((a, b) => a + b, 0);
-            document.getElementById('chartCenterLabel').innerHTML = `
-                <span class="block text-sm opacity-70">Total</span>
-                ${total}
-            `;
-        }
-
-        updateCenterLabel();
-
-        window.addEventListener('resize', () => {
-            kontenChart.options.plugins.legend.position = window.innerWidth < 640 ? 'bottom' : 'right';
-            kontenChart.update();
-        });
-    </script>
+                updateCenterLabel();
+            });
+        </script>
+    @endpush
 </x-app-layout>
