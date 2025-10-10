@@ -14,15 +14,24 @@ class KontenController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Konten::query()->latest();
+        try {
+            $query = Konten::query();
 
-        if ($request->filled('search')) {
-            $query->where('judul', 'like', '%' . $request->search . '%');
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $query->where(function ($q) use ($search) {
+                    $q->where('judul', 'like', "%{$search}%")
+                        ->orWhere('caption', 'like', "%{$search}%");
+                });
+            }
+
+            $konten = $query->orderBy('tanggal', 'desc')->paginate(6)->withQueryString();
+
+            return view('page.konten.index', ['konten' => $konten]);
+        } catch (\Exception $e) {
+            Log::error('Error saat memuat konten: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memuat data.');
         }
-
-        $konten = $query->paginate(8)->withQueryString();
-
-        return view('page.konten.index', compact('konten'));
     }
 
     /**
@@ -30,33 +39,25 @@ class KontenController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi dasar yang disederhanakan
         $validatedData = $request->validate([
             'judul'   => 'required|string|max:255',
-            'caption' => 'nullable|string',
+            'caption' => 'required|string',
             'tanggal' => 'required|date',
-            'gambar'  => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Maks 2MB
+            'gambar'  => 'required|image|mimes:jpeg,png,jpg,gif|max:1024',
         ]);
 
-        try {
-            // 1. Simpan gambar
+        // <-- PERUBAHAN KEAMANAN: Bersihkan input caption -->
+        // Ini akan menghapus semua HTML berbahaya tapi membiarkan yang aman (seperti <a>, <strong>, dll.)
+        $validatedData['caption'] = clean($request->input('caption'));
+
+        if ($request->hasFile('gambar')) {
             $path = $request->file('gambar')->store('konten', 'public');
-            
-            // 2. Siapkan data untuk disimpan ke database
-            $dataToCreate = $validatedData;
-            $dataToCreate['gambar'] = $path;
-
-            // 3. Simpan data ke database
-            Konten::create($dataToCreate);
-
-            // 4. Kembali dengan pesan sukses
-            return redirect()->route('konten.index')->with('success', 'Konten baru berhasil ditambahkan!');
-
-        } catch (\Exception $e) {
-            // Jika terjadi error, catat di log dan kembali dengan pesan error
-            Log::error('GAGAL MENYIMPAN KONTEN: ' . $e->getMessage());
-            return back()->with('error', 'Terjadi kesalahan internal saat menyimpan. Silakan periksa log.')->withInput();
+            $validatedData['gambar'] = $path;
         }
+
+        Konten::create($validatedData);
+
+        return redirect()->route('konten.index')->with('success', 'Konten berhasil ditambahkan.');
     }
 
     /**
@@ -66,31 +67,25 @@ class KontenController extends Controller
     {
         $validatedData = $request->validate([
             'judul'   => 'required|string|max:255',
-            'caption' => 'nullable|string',
+            'caption' => 'required|string',
             'tanggal' => 'required|date',
-            'gambar'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Gambar tidak wajib saat update
+            'gambar'  => 'nullable|image|mimes:jpeg,png,jpg,gif|max:1024',
         ]);
-        
-        try {
-            $dataToUpdate = $request->except('gambar');
 
-            if ($request->hasFile('gambar')) {
-                // Hapus gambar lama jika ada
-                if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
-                    Storage::disk('public')->delete($konten->gambar);
-                }
-                // Simpan gambar baru
-                $path = $request->file('gambar')->store('konten', 'public');
-                $dataToUpdate['gambar'] = $path;
+        // <-- PERUBAHAN KEAMANAN: Bersihkan input caption -->
+        $validatedData['caption'] = clean($request->input('caption'));
+
+        if ($request->hasFile('gambar')) {
+            if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
+                Storage::disk('public')->delete($konten->gambar);
             }
-
-            $konten->update($dataToUpdate);
-
-            return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui.');
-        } catch (\Exception $e) {
-            Log::error('GAGAL MEMPERBARUI KONTEN: ' . $e->getMessage());
-            return back()->with('error', 'Terjadi kesalahan internal saat memperbarui. Silakan periksa log.')->withInput();
+            $path = $request->file('gambar')->store('konten', 'public');
+            $validatedData['gambar'] = $path;
         }
+
+        $konten->update($validatedData);
+
+        return redirect()->route('konten.index')->with('success', 'Konten berhasil diperbarui!');
     }
 
     /**
@@ -98,16 +93,18 @@ class KontenController extends Controller
      */
     public function destroy(Konten $konten)
     {
+        // <-- PERBAIKAN: Mengisi method destroy yang kosong -->
         try {
+            // Hapus file gambar dari storage sebelum menghapus record dari DB
             if ($konten->gambar && Storage::disk('public')->exists($konten->gambar)) {
                 Storage::disk('public')->delete($konten->gambar);
             }
+
             $konten->delete();
             return redirect()->route('konten.index')->with('success', 'Konten berhasil dihapus.');
         } catch (\Exception $e) {
-            Log::error('GAGAL MENGHAPUS KONTEN: ' . $e->getMessage());
-            return redirect()->route('konten.index')->with('error', 'Terjadi kesalahan saat menghapus konten.');
+            Log::error('Error saat menghapus konten: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menghapus konten.');
         }
     }
 }
-
