@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvertorialController;
 use App\Http\Controllers\KontenController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ProfileController;
@@ -40,10 +41,15 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified']);
 Route::get('/', [WelcomeController::class, 'index']);
 
+Route::get('/advertorial', function () {
+    return view('advertorial.page');
+});
+Route::get('/advertorial', [AdvertorialController::class, 'index'])->name('advertorial.page');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::resource('konten', KontenController::class)->middleware('auth');
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
