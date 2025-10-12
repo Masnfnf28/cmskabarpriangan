@@ -4,34 +4,93 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} - Portal Berita Terkini</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
 
     <!-- Styles & Scripts dari Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-    {{-- Kode CSS yang sebelumnya ada di @push('styles') --}}
+    {{-- Kode CSS untuk Tampilan Baru --}}
     <style>
-        * {
-            box-sizing: border-box
+        :root {
+            --primary-color: #004c75;
+            --secondary-color: #fca311;
+            --text-dark: #1f2937;
+            --text-light: #f9fafb;
+            --bg-light: #f9fafb;
+            --bg-dark: #111827;
         }
 
         body {
-            font-family: 'Figtree', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
             margin: 0;
             padding: 0;
         }
 
-        .slideshow-container {
-            max-width: 1000px;
-            position: relative;
+        .dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Navigasi */
+        .main-nav {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .dark .main-nav {
+            background-color: #1f2937;
+            /* gray-800 */
+        }
+
+        .nav-container {
+            max-width: 1200px;
             margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .nav-links a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .dark .nav-links a {
+            color: var(--text-light);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Slideshow */
+        .slideshow-container {
+            max-width: 1200px;
+            position: relative;
+            margin: 2rem auto;
+            border-radius: 12px;
             overflow: hidden;
-            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
 
         .mySlides {
@@ -40,9 +99,9 @@
 
         .mySlides img {
             width: 100%;
-            height: 400px;
+            height: 450px;
             object-fit: cover;
-            border-radius: 8px;
+            filter: brightness(0.8);
         }
 
         .prev,
@@ -50,21 +109,27 @@
             cursor: pointer;
             position: absolute;
             top: 50%;
-            width: auto;
-            margin-top: -22px;
-            padding: 16px;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
             font-weight: bold;
             font-size: 18px;
-            transition: 0.6s ease;
-            border-radius: 0 3px 3px 0;
+            transition: background-color 0.3s ease;
+            border-radius: 50%;
             user-select: none;
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .prev {
+            left: 15px;
         }
 
         .next {
-            right: 0;
-            border-radius: 3px 0 0 3px;
+            right: 15px;
         }
 
         .prev:hover,
@@ -74,39 +139,32 @@
 
         .text {
             color: #fff;
-            font-size: 16px;
-            font-weight: 600;
-            padding: 8px 12px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 20px;
             position: absolute;
-            bottom: 12px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.4);
-        }
-
-        .numbertext {
-            color: #f2f2f2;
-            font-size: 12px;
-            padding: 8px 12px;
-            position: absolute;
-            top: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: left;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
 
         .dot {
             cursor: pointer;
-            height: 12px;
-            width: 12px;
-            margin: 0 2px;
-            background-color: #bbb;
+            height: 10px;
+            width: 10px;
+            margin: 0 4px;
+            background-color: #ccc;
             border-radius: 50%;
             display: inline-block;
-            transition: background-color 0.6s ease;
+            transition: background-color 0.3s ease, transform 0.3s;
         }
 
         .dot.active,
         .dot:hover {
-            background-color: #333;
+            background-color: var(--primary-color);
+            transform: scale(1.2);
         }
 
         .fade {
@@ -124,202 +182,238 @@
             }
         }
 
+        /* Main Layout */
         .main-container {
             max-width: 1200px;
-            margin: 20px auto;
+            margin: 2rem auto;
             padding: 0 15px;
             display: grid;
-            grid-template-columns: 3fr 1fr;
-            gap: 20px;
+            grid-template-columns: 1fr;
+            gap: 40px;
         }
 
-        .sidebar {
-            width: 100%;
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 3fr 1fr;
+            }
         }
 
-        .trending-title {
-            font-style: italic;
-            font-weight: 600;
-            color: #004c75;
-            border-bottom: 2px solid #004c75;
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            display: inline-block;
+        }
+
+        /* Sidebar */
+        .sidebar .trending-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
             padding-bottom: 4px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
         }
 
         .trending-item {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 12px;
-            cursor: pointer;
+            gap: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 15px;
         }
 
-        .trending-item:hover .trending-number,
-        .trending-item:hover .trending-link {
-            color: #002ac0;
+        .dark .trending-item {
+            border-color: #374151;
+        }
+
+        .trending-item:last-child {
+            border-bottom: none;
         }
 
         .trending-number {
-            color: #000;
+            color: #d1d5db;
+            /* gray-300 */
             font-weight: 700;
-            font-size: 20px;
-            width: 35px;
+            font-size: 1.5rem;
+            line-height: 1;
+            min-width: 30px;
             text-align: center;
         }
 
-        .trending-link {
-            color: #000;
-            text-decoration: none;
-            font-weight: 600;
+        .dark .trending-number {
+            color: #4b5563;
+            /* gray-600 */
         }
 
+        .trending-link {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .dark .trending-link {
+            color: var(--text-light);
+        }
+
+        .trending-link:hover {
+            color: var(--primary-color);
+        }
+
+        /* Post Grid */
         .post-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
+            gap: 25px;
         }
 
         .post-card {
-            border-radius: 8px;
+            background: #ffffff;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            transition: box-shadow 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
+        .dark .post-card {
+            background: #1f2937;
+        }
+
+        /* gray-800 */
+
         .post-card:hover {
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card-content {
+            padding: 1rem;
+        }
+
+        .post-category {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
         }
 
         .post-title {
-            font-size: 16px;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 10px;
-            cursor: pointer;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
         }
 
-        .post-title:hover {
-            color: #004c75;
-        }
-
-        .post-views {
+        .post-meta {
             display: flex;
             align-items: center;
             gap: 5px;
-            color: #666;
-            font-size: 14px;
+            color: #6b7280;
+            font-size: 0.8rem;
         }
 
-        @media (max-width: 1024px) {
-            .main-container {
-                grid-template-columns: 2fr 1fr;
-                gap: 15px;
-            }
+        .dark .post-meta {
+            color: #9ca3af;
         }
 
-        @media (max-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
+        /* General links */
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-            .mySlides img {
-                height: 250px;
-            }
+        .caption-content a {
+            color: var(--primary-color);
+            text-decoration: underline;
+        }
+
+        .dark .caption-content a {
+            color: #60a5fa;
         }
     </style>
 </head>
 
-<body class="antialiased bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <header class="py-6 text-center">
-        <h1 class="text-4xl font-bold">Selamat Datang di Portal Berita</h1>
-    </header>
+<body class="antialiased text-gray-800 dark:text-gray-200">
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">Portal Berita</div>
+            <div class="nav-links">
+                <a href="{{ url('/') }}">Home</a>
+                <a href="{{ route('advertorial.page') }}">Advertorial</a>
+                <a href="#">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
+    @if ($konten && count($konten) > 0)
+        <!-- 🔥 HEADLINE DENGAN SLIDESHOW DINAMIS -->
+        <div class="slideshow-container">
+            @foreach (collect($konten)->take(3) as $k)
+                <div class="mySlides fade">
+                    {{-- <div class="numbertext">{{ $loop->iteration }} / 3</div> --}}
+                    {{-- PERUBAHAN: Tautan slideshow juga mengarah ke halaman advertorial --}}
+                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}">
+                        <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}">
+                        <div class="text">{{ $k->judul }}</div>
+                    </a>
+                </div>
+            @endforeach
+
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <div style="text-align:center; margin-top: 1rem;">
+            @foreach (collect($konten)->take(3) as $item)
+                <span class="dot" onclick="currentSlide({{ $loop->iteration }})"></span>
+            @endforeach
+        </div>
+    @endif
 
     <main class="main-container">
         <!-- KONTEN UTAMA -->
         <section class="content-main">
-            {{-- Pastikan ada data konten sebelum menampilkan slideshow --}}
-            @if ($konten && count($konten) > 0)
-                <!-- 🔥 HEADLINE DENGAN SLIDESHOW DINAMIS -->
-                <div class="mb-8">
-                    <div class="slideshow-container">
-                        {{-- Ambil 3 konten pertama untuk slideshow --}}
-                        @foreach (collect($konten)->take(3) as $item)
-                            @php $slide = (object) $item; @endphp
-                            <div class="mySlides fade">
-                                <div class="numbertext">{{ $loop->iteration }} / 3</div>
-                                {{-- Gunakan gambar_url dari accessor --}}
-                                <img src="{{ $slide->gambar_url }}" alt="{{ $slide->judul }}" style="width:100%">
-                                <div class="text">{{ $slide->judul }}</div>
+            <h2 class="section-title">Postingan Terbaru</h2>
+            <div class="post-grid">
+                @forelse ($konten as $k)
+                    {{-- PERUBAHAN: Tautan post-card kembali ke route advertorial.page --}}
+                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="post-card">
+                        <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}"
+                            class="w-full h-48 object-cover">
+                        <div class="post-card-content">
+                            <span class="post-category">Berita</span>
+                            <h3 class="post-title line-clamp-2">{{ $k->judul }}</h3>
+                            <div class="post-meta">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>{{ \Carbon\Carbon::parse($k->tanggal)->format('d M Y') }}</span>
                             </div>
-                        @endforeach
-
-                        <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                        <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                    </div>
-
-                    <div style="text-align:center; margin-top: 10px;">
-                        @foreach (collect($konten)->take(3) as $item)
-                            <span class="dot" onclick="currentSlide({{ $loop->iteration }})"></span>
-                        @endforeach
-                    </div>
-                </div>
-            @endif
-
-            <!-- Postingan Terbaru -->
-            <section class="max-w-6xl mx-auto">
-                <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Postingan Terbaru</h2>
-
-                <div class="post-grid">
-                    @forelse ($konten as $item)
-                        @php $post = (object) $item; @endphp
-                        <div
-                            class="post-card bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                            {{-- Arahkan ke halaman detail dengan ID konten --}}
-                            <a href="{{route('advertorial.page')?post={{ $post->id }}" class="block"}}>
-                                <div class="h-48 overflow-hidden">
-                                    <img src="{{ $post->gambar_url }}" alt="{{ $post->judul }}"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <div class="p-4">
-                                    <h3 class="post-title font-semibold text-lg mb-2 line-clamp-2">
-                                        {{ $post->judul }}
-                                    </h3>
-                                    <div class="post-views flex items-center text-gray-500 text-sm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        <span>Views : {{ $post->views ?? '1.2K' }}</span>
-                                    </div>
-                                </div>
-                            </a>
                         </div>
-                    @empty
-                        <p class="col-span-full text-center py-10">Tidak ada postingan yang dapat ditampilkan saat ini.
-                        </p>
-                    @endforelse
-                </div>
-            </section>
+                    </a>
+                @empty
+                    <p class="col-span-full text-center py-10 text-gray-500">Tidak ada postingan yang dapat ditampilkan.
+                    </p>
+                @endforelse
+            </div>
         </section>
 
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <h3 class="trending-title">TRENDING</h3>
-
-            {{-- Ambil 6 konten pertama untuk daftar trending --}}
-            @forelse (collect($konten)->take(6) as $item)
-                @php $trending = (object) $item; @endphp
+            @forelse (collect($konten)->take(6) as $k)
                 <div class="trending-item">
                     <div class="trending-number">{{ $loop->iteration }}</div>
-                    <a href="route('advertorial.page')?post={{ $trending->id }}" class="trending-link"
-                        data-title="{{ $trending->judul }}">
-                        {{ $trending->judul }}
+                    {{-- PERUBAHAN: Tautan trending kembali ke route advertorial.page --}}
+                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="trending-link"
+                        data-title="{{ $k->judul }}">
+                        {{ $k->judul }}
                     </a>
                 </div>
             @empty
@@ -328,12 +422,10 @@
         </aside>
     </main>
 
-    <footer class="mt-16 text-center text-sm text-gray-500 dark:text-gray-400 py-4">
+    <footer class="mt-16 text-center text-sm text-gray-500 dark:text-gray-400 py-6 border-t dark:border-gray-800">
         Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
     </footer>
 
-
-    {{-- Kode JavaScript yang sebelumnya ada di @push('scripts') --}}
     <script>
         let slideIndex = 1;
         showSlides(slideIndex);
@@ -350,8 +442,7 @@
             let i;
             let slides = document.getElementsByClassName("mySlides");
             let dots = document.getElementsByClassName("dot");
-            if (slides.length === 0) return; // Hentikan jika tidak ada slide
-
+            if (slides.length === 0) return;
             if (n > slides.length) {
                 slideIndex = 1
             }
@@ -367,13 +458,10 @@
             slides[slideIndex - 1].style.display = "block";
             dots[slideIndex - 1].className += " active";
         }
-
-        // Auto-slide setiap 5 detik
         setInterval(() => {
             plusSlides(1);
         }, 5000);
     </script>
-
 </body>
 
 </html>

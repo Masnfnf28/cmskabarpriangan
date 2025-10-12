@@ -1,106 +1,268 @@
-@section('content')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ $featuredPost->judul ?? 'Advertorial' }} - {{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700&display=swap" rel="stylesheet" />
+
+    <!-- Styles -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+        /* PERUBAHAN TEMA WARNA */
+        :root {
+            --primary-color: #fca311;
+            /* Kuning sebagai warna utama */
+            --secondary-color: #141E27;
+            /* Biru Gelap/Hitam sebagai warna sekunder */
+            --text-dark: #1f2937;
+            --text-light: #f9fafb;
+            --bg-light: #f9fafb;
+            --bg-dark: #111827;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        .dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        /* Navigation Bar */
+        .main-nav {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 3px solid var(--primary-color);
+        }
+
+        .dark .main-nav {
+            background-color: #1f2937;
+            /* gray-800 */
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+        }
+
+        .dark .nav-logo {
+            color: var(--primary-color);
+        }
+
+        .nav-links a {
+            margin-left: 1.5rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .dark .nav-links a {
+            color: var(--text-light);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 20px;
+        }
+
+        .post-header .category {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+            padding: 4px 12px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .post-header .post-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .post-header .post-meta {
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+
+        .dark .post-header .post-meta {
+            color: #9ca3af;
+        }
+
+        .post-image {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-content {
+            font-size: 1.1rem;
+        }
+
+        .post-content a {
+            color: var(--primary-color);
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .dark .post-content a {
+            color: #fcd34d;
+            /* yellow-300 */
+        }
+
+        /* "Baca Juga" Section */
+        .related-posts {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .post-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+        }
+
+        .dark .post-card {
+            background: #1f2937;
+        }
+
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .post-card-content {
+            padding: 1rem;
+        }
+
+        .post-card-title {
+            font-weight: 600;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+    <nav class="main-nav">
+        <div class="nav-container">
+            <a href="{{ url('/') }}" class="nav-logo">Portal Berita</a>
+            <div class="nav-links">
+                <a href="{{ url('/') }}">Home</a>
+                <a href="{{ route('advertorial.page') }}">Advertorial</a>
+                <a href="#">Kontak</a>
+            </div>
+        </div>
+    </nav>
+
     <main class="container">
-        <!-- ADVERTORIAL INTRO -->
-        <section class="advertorial-intro">
-            <h2 class="section-title">Apa Itu Advertorial?</h2>
-            <p class="intro-text">
-                Advertorial adalah bentuk konten pemasaran yang menggabungkan unsur editorial dengan promosi produk atau
-                layanan.
-                Dibuat dengan gaya jurnalistik yang informatif, advertorial memberikan nilai tambah bagi pembaca sambil
-                mempromosikan brand Anda secara halus dan efektif.
-            </p>
-        </section>
+        @if ($featuredPost)
+            <article>
+                <header class="post-header">
+                    <span class="category">Advertorial</span>
+                    <h1 class="post-title">{{ $featuredPost->judul }}</h1>
+                    <p class="post-meta">
+                        Dipublikasikan pada
+                        {{ \Carbon\Carbon::parse($featuredPost->tanggal)->isoFormat('D MMMM YYYY') }}
+                    </p>
+                </header>
 
-        <!-- FEATURED ADVERTORIAL - MENAMPILKAN POST YANG DIKLIK -->
-        <section class="featured-advertorial" id="featured-advertorial">
-            @if ($featuredPost)
-                <div class="featured-card">
-                    <img src="{{ asset('storage/' . $featuredPost->gambar) }}" alt="{{ $featuredPost->judul }}"
-                        class="featured-image">
-                    <div class="featured-content">
-                        <span class="featured-badge">Featured</span>
-                        <h2 class="featured-title">{{ $featuredPost->judul }}</h2>
-                        <div class="featured-excerpt">
-                            {!! $featuredPost->caption !!}
-                        </div>
-                        <div class="advertorial-meta">
-                            <span
-                                class="advertorial-date">{{ \Carbon\Carbon::parse($featuredPost->tanggal)->isoFormat('D MMMM YYYY') }}</span>
-                            <div class="advertorial-views">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                                    stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                </svg>
-                                <span>{{ $featuredPost->views ?? '1.5K' }}</span>
-                            </div>
-                        </div>
-                    </div>
+                <img src="{{ asset('storage/' . $featuredPost->gambar) }}" alt="{{ $featuredPost->judul }}"
+                    class="post-image">
+
+                <div class="post-content prose dark:prose-invert max-w-none">
+                    {!! $featuredPost->caption !!}
                 </div>
-            @else
-                <p class="text-center py-10">Konten yang Anda cari tidak ditemukan atau belum ada.</p>
-            @endif
-        </section>
+            </article>
+        @else
+            <div class="text-center py-20">
+                <h2 class="text-2xl font-semibold">Konten Tidak Ditemukan</h2>
+                <p class="text-gray-500 mt-2">Maaf, konten yang Anda cari tidak tersedia.</p>
+                <a href="{{ url('/') }}"
+                    class="mt-6 inline-block bg-yellow-500 text-black px-6 py-2 rounded-lg hover:bg-yellow-600">Kembali
+                    ke Home</a>
+            </div>
+        @endif
+    </main>
 
-        <!-- ADVERTORIAL GRID -->
-        <section class="advertorial-grid" id="advertorial-grid">
-            @forelse ($otherPosts as $post)
-                <div class="advertorial-card">
-                    <a href="{{ route('advertorial.page', ['post' => $post->id]) }}" class="block">
+    @if ($otherPosts->isNotEmpty())
+        <section class="related-posts">
+            <h2 class="section-title">Baca Juga</h2>
+            <div class="post-grid">
+                @foreach ($otherPosts as $post)
+                    <a href="{{ route('advertorial.page', ['post' => $post->id]) }}" class="post-card">
                         <img src="{{ asset('storage/' . $post->gambar) }}" alt="{{ $post->judul }}"
-                            class="advertorial-image">
-                        <div class="advertorial-content">
-                            <span class="advertorial-category">{{ $post->category ?? 'Berita' }}</span>
-                            <h3 class="advertorial-title line-clamp-2">{{ $post->judul }}</h3>
-                            <div class="advertorial-excerpt line-clamp-3">
-                                {!! strip_tags($post->caption) !!}
-                            </div>
-                            <div class="advertorial-meta">
-                                <span
-                                    class="advertorial-date">{{ \Carbon\Carbon::parse($post->tanggal)->isoFormat('D MMMM YYYY') }}</span>
-                                <div class="advertorial-views">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
-                                        viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                    </svg>
-                                    <span>{{ $post->views ?? 'N/A' }}</span>
-                                </div>
-                            </div>
+                            class="post-card-image">
+                        <div class="post-card-content">
+                            <h3 class="post-card-title line-clamp-2">{{ $post->judul }}</h3>
                         </div>
                     </a>
-                </div>
-            @empty
-                <p class="col-span-full text-center py-10">Tidak ada advertorial lain untuk ditampilkan.</p>
-            @endforelse
-        </section>
-
-        <!-- PAGINATION -->
-        <div class="pagination-container">
-            {{ $otherPosts->links() }}
-        </div>
-
-        <!-- CTA SECTION -->
-        <section class="cta-section">
-            <h2 class="cta-title">Tertarik Memasang Advertorial?</h2>
-            <p class="cta-text">
-                Jadikan brand Anda lebih dikenal dengan advertorial yang menarik dan informatif.
-                Tim kami siap membantu membuat konten yang sesuai dengan kebutuhan bisnis Anda.
-            </p>
-            <div class="cta-buttons">
-                <a href="#" class="cta-btn primary">Konsultasi Gratis</a>
-                <a href="#" class="cta-btn secondary">Lihat Paket</a>
+                @endforeach
             </div>
         </section>
-    </main>
-@endsection
+    @endif
+</body>
 
-@push('styles')
-    <style>
-        /* SALIN SEMUA KODE <style> DARI FILE advertorial LAMA ANDA KE SINI */
-    </style>
-@endpush
+</html>
