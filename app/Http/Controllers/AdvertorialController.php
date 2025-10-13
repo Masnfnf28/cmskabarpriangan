@@ -23,20 +23,16 @@ class AdvertorialController extends Controller
             $featuredPost = Konten::find($postId);
         }
 
-        // Jika tidak ada parameter 'post' atau post tidak ditemukan, coba ambil post terbaru
-        if (!$featuredPost) {
-            $featuredPost = Konten::orderBy('tanggal', 'desc')->first();
-        }
-
-        // 3. Jika post utama ditemukan, ambil post lain dengan paginasi
+        // 3. Ambil post lain dengan paginasi
         if ($featuredPost) {
-            // PERBAIKAN: Gunakan paginate() untuk mendapatkan objek Paginator
-            $otherPosts = Konten::where('id', '!=', $featuredPost->id) // Ambil yang ID-nya tidak sama
+            // Jika ada featured post, ambil post lain kecuali featured
+            $otherPosts = Konten::where('id', '!=', $featuredPost->id)
                 ->orderBy('tanggal', 'desc')
-                ->paginate(6); // Batasi 6 post per halaman
+                ->paginate(3);
         } else {
-            // Jika database benar-benar kosong
-            $otherPosts = Konten::paginate(6);
+            // Jika tidak ada featured post (halaman pertama), tampilkan semua post
+            $otherPosts = Konten::orderBy('tanggal', 'desc')
+                ->paginate(3);
         }
 
         return view('advertorial', [

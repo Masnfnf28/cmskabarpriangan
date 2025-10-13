@@ -5,7 +5,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'], // <- bisa kamu ganti dengan domain frontend kalau mau dibatasi
+    'allowed_origins' => ['http://localhost:3000'], // <- bisa kamu ganti dengan domain frontend kalau mau dibatasi
 
     'allowed_origins_patterns' => [],
 

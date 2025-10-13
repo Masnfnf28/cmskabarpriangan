@@ -24,6 +24,9 @@
     <!-- Scripts Laravel (Vite) -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    {{-- Stack untuk custom styles dari halaman lain --}}
+    @stack('styles')
+
     {{-- Custom CSS untuk Select2 agar sesuai tema --}}
     <style>
         /* General styling for Select2 container */
@@ -74,6 +77,7 @@
             position: relative;
             color: #1f2937;
         }
+        
     </style>
 </head>
 
@@ -92,9 +96,13 @@
 
         <!-- Page Content -->
         <main>
-            <div class="px-3 py-3">
-                {{ $slot }}
-            </div>
+            @if(isset($slot))
+                <div class="px-3 py-3">
+                    {{ $slot }}
+                </div>
+            @else
+                @yield('content')
+            @endif
         </main>
     </div>
 

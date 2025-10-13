@@ -3,53 +3,57 @@
 use App\Http\Controllers\AdvertorialController;
 use App\Http\Controllers\KontenController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\LayananKamiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RedaksiController;
+use App\Http\Controllers\TentangKamiController;
 use Illuminate\Support\Facades\Route;
-use Intervention\Image\Facades\InterventionImage;
-use App\Models\Konten;
-use Carbon\Carbon;
 
-Route::get('/', [App\Http\Controllers\WelcomeController::class, 'index']);
+/*
+|--------------------------------------------------------------------------
+| PUBLIC ROUTES (Frontend - Tidak Perlu Login)
+|--------------------------------------------------------------------------
+| Route-route ini dapat diakses oleh siapa saja tanpa perlu login.
+| Halaman-halaman ini menampilkan konten untuk pengunjung umum.
+*/
 
-// 🧭 DASHBOARD DENGAN GRAFIK
-Route::get('/dashboard', function () {
-    $year = now()->year;
+// Halaman Beranda
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
-    // Total konten
-    $totalKonten = Konten::count();
+// Halaman Advertorial
+Route::get('/advertorial', [AdvertorialController::class, 'index'])->name('advertorial.page');
 
-    // Ambil jumlah konten per bulan
-    $dataPerBulanRaw = Konten::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as jumlah')
-        ->whereYear('tanggal', $year)
-        ->groupBy('bulan')
-        ->pluck('jumlah', 'bulan');
+//Halaman Redaksi
+Route::get('/redaksi', [RedaksiController::class, 'index'])->name('redaksi');
+// Halaman Layanan Kami
+Route::get('/layanan-kami', [LayananKamiController::class, 'index'])->name('layanan-kami');
+//tentang kami
+Route::get('/tentang-kami', [TentangKamiController::class, 'index'])->name('tentang-kami');
+/*
+|--------------------------------------------------------------------------
+| PROTECTED ROUTES (Backend - Perlu Login)
+|--------------------------------------------------------------------------
+| Route-route ini hanya dapat diakses oleh user yang sudah login.
+| Digunakan untuk mengelola konten, profile, dan dashboard admin.
+*/
 
-    // Pastikan semua bulan 1-12 tersedia
-    $dataPerBulan = [];
-    $bulanLabels = [];
-    for ($i = 1; $i <= 12; $i++) {
-        $dataPerBulan[] = $dataPerBulanRaw->get($i, 0); // default 0
-        $bulanLabels[] = Carbon::create()->month($i)->format('F'); // Jan, Feb, ...
-    }
-
-    return view('page.dashboard.index', compact('totalKonten', 'dataPerBulan', 'bulanLabels'));
-})->name('dashboard')->middleware(['auth', 'verified']);
-
+// Dashboard Admin
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard')
     ->middleware(['auth', 'verified']);
-Route::get('/', [WelcomeController::class, 'index']);
 
-Route::get('/advertorial', function () {
-    return view('advertorial.page');
-});
-Route::get('/advertorial', [AdvertorialController::class, 'index'])->name('advertorial.page');
-
+// Profile Management
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Konten Management (CRUD)
 Route::resource('konten', KontenController::class)->middleware('auth');
+
+// Authentication Routes
 require __DIR__ . '/auth.php';
+
+

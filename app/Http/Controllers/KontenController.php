@@ -54,15 +54,35 @@ class KontenController extends Controller
                 'required',
                 'image',
                 'mimes:jpeg,png,jpg,gif',
-                'max:1024', // Batas maksimal 1MB (1024 KB)
-                // Validasi kustom untuk memastikan gambar adalah landscape
+                'max:2048', // Batas maksimal 2MB
+                // Validasi kustom untuk mendukung ukuran Instagram, YouTube, dan Poster
                 function (string $attribute, UploadedFile $value, \Closure $fail) {
                     $imageSize = getimagesize($value->getRealPath());
                     $width = $imageSize[0];
                     $height = $imageSize[1];
 
-                    if ($height >= $width) {
-                        $fail('Gambar harus berorientasi landscape (lebar harus lebih besar dari tinggi).');
+                    // Hitung rasio aspek
+                    $ratio = $width / $height;
+
+                    // Daftar rasio yang diizinkan dengan toleransi ±0.1
+                    $allowedRatios = [
+                        1.0,    // Instagram Square (1:1)
+                        0.8,    // Instagram Portrait (4:5)
+                        0.5625, // Instagram Story/Reels (9:16)
+                        1.7778, // YouTube (16:9)
+                        0.7071, // Poster Portrait (A4: 1:1.414 atau 5:7)
+                    ];
+
+                    $isValid = false;
+                    foreach ($allowedRatios as $allowedRatio) {
+                        if (abs($ratio - $allowedRatio) <= 0.1) {
+                            $isValid = true;
+                            break;
+                        }
+                    }
+
+                    if (!$isValid) {
+                        $fail('Gambar harus memiliki rasio aspek yang sesuai: Instagram (1:1, 4:5, 9:16), YouTube (16:9), atau Poster (portrait).');
                     }
                 },
             ],
@@ -94,11 +114,34 @@ class KontenController extends Controller
                 'nullable', // Gambar opsional saat update
                 'image',
                 'mimes:jpeg,png,jpg,gif',
-                'max:1024', // Batas maksimal 1MB
+                'max:2048', // Batas maksimal 2MB
                 function (string $attribute, UploadedFile $value, \Closure $fail) {
                     $imageSize = getimagesize($value->getRealPath());
-                    if ($imageSize && $imageSize[1] >= $imageSize[0]) {
-                        $fail('Gambar harus berorientasi landscape.');
+                    $width = $imageSize[0];
+                    $height = $imageSize[1];
+
+                    // Hitung rasio aspek
+                    $ratio = $width / $height;
+
+                    // Daftar rasio yang diizinkan dengan toleransi ±0.1
+                    $allowedRatios = [
+                        1.0,    // Instagram Square (1:1)
+                        0.8,    // Instagram Portrait (4:5)
+                        0.5625, // Instagram Story/Reels (9:16)
+                        1.7778, // YouTube (16:9)
+                        0.7071, // Poster Portrait (A4: 1:1.414 atau 5:7)
+                    ];
+
+                    $isValid = false;
+                    foreach ($allowedRatios as $allowedRatio) {
+                        if (abs($ratio - $allowedRatio) <= 0.1) {
+                            $isValid = true;
+                            break;
+                        }
+                    }
+
+                    if (!$isValid) {
+                        $fail('Gambar harus memiliki rasio aspek yang sesuai: Instagram (1:1, 4:5, 9:16), YouTube (16:9), atau Poster (portrait).');
                     }
                 },
             ],
