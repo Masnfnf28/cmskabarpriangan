@@ -114,29 +114,48 @@
 
         /* Mobile Menu */
         .mobile-menu {
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem 2rem;
+            position: absolute;
+            top: 100%;
+            right: 1rem;
+            width: 250px;
             background-color: #fca311;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-10px);
+            opacity: 0;
+            visibility: hidden;
+            transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 50;
+            padding: 0.75rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 0.5rem;
         }
 
         .mobile-menu.active {
-            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
         }
 
         .mobile-menu a {
             text-decoration: none;
             color: #000000;
             font-weight: 600;
-            padding: 0.5rem 0;
-            transition: color 0.3s;
+            padding: 0.75rem 1.25rem;
+            transition: all 0.3s;
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         }
 
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
         .mobile-menu a:hover {
+            background-color: rgba(0, 0, 0, 0.1);
             color: #ffffff;
+            padding-left: 1.5rem;
         }
 
         .mobile-menu a.active-page {
@@ -160,10 +179,18 @@
             .nav-container {
                 padding: 0;
                 height: 55px;
+                position: relative;
             }
 
             .nav-logo img {
                 height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mobile-menu {
+                width: 220px;
+                right: 0.5rem;
             }
         }
     </style>
@@ -248,7 +275,7 @@
                         </li>
                         <li style="margin-bottom: 0.75rem; display: flex; align-items: start; gap: 0.5rem;">
                             <span>📱</span>
-                            <span>+62 812-3456-7890</span>
+                            <span>-</span>
                         </li>
                         <li style="margin-bottom: 0.75rem; display: flex; align-items: start; gap: 0.5rem;">
                             <span>📍</span>

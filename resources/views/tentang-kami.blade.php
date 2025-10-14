@@ -59,76 +59,7 @@
         </div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="contact-section" data-aos="fade-up">
-        <h2 class="section-title">Hubungi Kami</h2>
-        <div class="contact-grid">
-            <div class="contact-info" data-aos="fade-right" data-aos-delay="100">
-                <h3>Informasi Kontak</h3>
-                <div class="contact-details">
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            📍
-                        </div>
-                        <div class="contact-text">
-                            <h4>Alamat</h4>
-                            <p>Jl.dr. Soekardjo Nomor 70 Kelurahan Tawangsari Kecamatan Tawang Kota Tasikmalaya Jawa Barat (HU. Kabar Priangan)</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            📞
-                        </div>
-                        <div class="contact-text">
-                            <h4>Telepon</h4>
-                            <p>(0265) 1234-5678</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            ✉
-                        </div>
-                        <div class="contact-text">
-                            <h4>Email</h4>
-                            <p>priangantv2024@gmail.com
-                            </p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">
-                            ⏰
-                        </div>
-                        <div class="contact-text">
-                            <h4>Jam Operasional</h4>
-                            <p>Senin - Jumat: 09.00 - 16.00 WIB</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="contact-form" data-aos="fade-left" data-aos-delay="200">
-                <h3>Kirim Pesan</h3>
-                <form>
-                    <div class="form-group">
-                        <label for="name">Nama Lengkap</label>
-                        <input type="text" id="name" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subjek</label>
-                        <input type="text" id="subject" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Pesan</label>
-                        <textarea id="message" class="form-control" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Kirim Pesan</button>
-                </form>
-            </div>
-        </div>
-    </section>
+    
 </main>
 @endsection
 
