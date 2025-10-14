@@ -311,7 +311,7 @@
 
 @section('content')
     @if ($konten && count($konten) > 0)
-        <div class="slideshow-container">
+        <div class="slideshow-container" data-aos="fade-down">
             @foreach (collect($konten)->take(3) as $k)
                 <div class="mySlides fade">
                     <a href="{{ route('advertorial.page', ['post' => $k->id]) }}">
@@ -332,10 +332,10 @@
 
     <main class="main-container">
         <section class="content-main">
-            <h2 class="section-title">Postingan Terbaru</h2>
+            <h2 class="section-title" data-aos="fade-right">Postingan Terbaru</h2>
             <div class="post-grid">
                 @forelse ($konten as $k)
-                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="post-card">
+                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}"
                             class="w-full h-40 object-cover">
                         <div class="post-card-content">
@@ -353,10 +353,10 @@
             </div>
         </section>
 
-        <aside class="sidebar">
+        <aside class="sidebar" data-aos="fade-left">
             <h3 class="trending-title">TRENDING</h3>
             @forelse (collect($konten)->take(6) as $k)
-                <div class="trending-item">
+                <div class="trending-item" data-aos="fade-left" data-aos-delay="{{ $loop->index * 100 }}">
                     <div class="trending-number">{{ $loop->iteration }}</div>
                     <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="trending-link"
                         data-title="{{ $k->judul }}">

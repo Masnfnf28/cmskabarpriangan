@@ -3,20 +3,20 @@
 @section('content')
     <main class="container">
         <!-- REDAKSI INFO -->
-        <section class="redaksi-info">
+        <section class="redaksi-info" data-aos="fade-up">
             <h2>Profil Redaksi Media Portal</h2>
             <p>Redaksi Media Portal terdiri dari tim jurnalis profesional yang berkomitmen untuk menyajikan berita yang akurat, berimbang, dan bertanggung jawab. Kami mengutamakan prinsip-prinsip jurnalisme yang independen dan selalu berpedoman pada kode etik jurnalistik.</p>
             
             <div class="info-grid">
-                <div class="info-card">
+                <div class="info-card" data-aos="fade-up" data-aos-delay="100">
                     <h3>Visi Redaksi</h3>
                     <p>Menjadi sumber informasi terpercaya yang mengedukasi masyarakat dan berkontribusi positif bagi perkembangan demokrasi di Indonesia.</p>
                 </div>
-                <div class="info-card">
+                <div class="info-card" data-aos="fade-up" data-aos-delay="200">
                     <h3>Misi Redaksi</h3>
                     <p>Menyajikan berita yang faktual, aktual, dan relevan dengan mengedepankan prinsip keadilan, akurasi, dan keberimbangan.</p>
                 </div>
-                <div class="info-card">
+                <div class="info-card" data-aos="fade-up" data-aos-delay="300">
                     <h3>Nilai-Nilai</h3>
                     <p>Integritas, Independensi, Akurasi, Keberimbangan, dan Tanggung Jawab Sosial.</p>
                 </div>
@@ -25,9 +25,9 @@
 
         <!-- STRUKTUR REDAKSI -->
         <section class="structure-section">
-            <h2 class="section-title">Struktur Redaksi</h2>
+            <h2 class="section-title" data-aos="fade-up">Struktur Redaksi</h2>
             <div class="structure-grid">
-                <div class="department">
+                <div class="department" data-aos="zoom-in" data-aos-delay="100">
                     <h3>Pimpinan Redaksi</h3>
                     <ul class="team-list">
                         <li>
@@ -41,7 +41,7 @@
                     </ul>
                 </div>
                 
-                <div class="department">
+                <div class="department" data-aos="zoom-in" data-aos-delay="200">
                     <h3>Editorial</h3>
                     <ul class="team-list">
                         <li>
@@ -59,7 +59,7 @@
                     </ul>
                 </div>
                 
-                <div class="department">
+                <div class="department" data-aos="zoom-in" data-aos-delay="300">
                     <h3>Reporter & Jurnalis</h3>
                     <ul class="team-list">
                         <li>
@@ -81,7 +81,7 @@
                     </ul>
                 </div>
                 
-                <div class="department">
+                <div class="department" data-aos="zoom-in" data-aos-delay="400">
                     <h3>Divisi Khusus</h3>
                     <ul class="team-list">
                         <li>
@@ -103,9 +103,9 @@
 
         <!-- TIM EDITORIAL -->
         <section class="editorial-team">
-            <h2 class="section-title">Tim Editorial</h2>
+            <h2 class="section-title" data-aos="fade-up">Tim Editorial</h2>
             <div class="team-grid">
-                <div class="team-member">
+                <div class="team-member" data-aos="flip-up" data-aos-delay="100">
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Wakil Pemimpin Redaksi" class="member-photo">
                     <div class="member-info">
                         <h3 class="member-name">Dr. Sari Dewi, M.Si</h3>
@@ -118,7 +118,7 @@
                     </div>
                 </div>
                 
-                <div class="team-member">
+                <div class="team-member" data-aos="flip-up" data-aos-delay="200">
                     <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Wakil Pemimpin Redaksi" class="member-photo">
                     <div class="member-info">
                         <h3 class="member-name">Budi Santoso, S.Sos</h3>
@@ -131,7 +131,7 @@
                     </div>
                 </div>
                 
-                <div class="team-member">
+                <div class="team-member" data-aos="flip-up" data-aos-delay="300">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Editor in Chief" class="member-photo">
                     <div class="member-info">
                         <h3 class="member-name">Maya Sari, S.I.Kom</h3>
@@ -147,27 +147,27 @@
         </section>
 
         <!-- KODE ETIK -->
-        <section class="ethics-section">
+        <section class="ethics-section" data-aos="fade-up">
             <h2 class="section-title">Kode Etik Jurnalistik</h2>
             <p>Redaksi Media Portal berkomitmen untuk selalu menjunjung tinggi kode etik jurnalistik dalam setiap pemberitaan. Berikut adalah prinsip-prinsip yang kami pegang teguh:</p>
             
             <div class="ethics-grid">
-                <div class="ethics-card">
+                <div class="ethics-card" data-aos="fade-right" data-aos-delay="100">
                     <h3>Independensi</h3>
                     <p>Redaksi bekerja secara independen tanpa campur tangan dari pihak manapun. Berita disajikan secara objektif tanpa dipengaruhi kepentingan tertentu.</p>
                 </div>
                 
-                <div class="ethics-card">
+                <div class="ethics-card" data-aos="fade-left" data-aos-delay="200">
                     <h3>Akurasi</h3>
                     <p>Setiap informasi yang disampaikan telah melalui proses verifikasi yang ketat. Kami bertanggung jawab atas keakuratan data dan fakta yang disajikan.</p>
                 </div>
                 
-                <div class="ethics-card">
+                <div class="ethics-card" data-aos="fade-right" data-aos-delay="300">
                     <h3>Keberimbangan</h3>
                     <p>Memberikan ruang yang sama kepada semua pihak yang terkait dalam sebuah pemberitaan. Menghindari pemberitaan sepihak yang tidak berimbang.</p>
                 </div>
                 
-                <div class="ethics-card">
+                <div class="ethics-card" data-aos="fade-left" data-aos-delay="400">
                     <h3>Prinsip Praduga Tak Bersalah</h3>
                     <p>Menghormati hak setiap individu untuk dianggap tidak bersalah sampai pengadilan menyatakan bersalah. Tidak melakukan trial by media.</p>
                 </div>
@@ -175,10 +175,10 @@
         </section>
 
         <!-- KONTAK REDAKSI -->
-        <section class="contact-section">
+        <section class="contact-section" data-aos="fade-up">
             <h2 class="section-title">Hubungi Redaksi</h2>
             <div class="contact-grid">
-                <div class="contact-info">
+                <div class="contact-info" data-aos="fade-right" data-aos-delay="100">
                     <h3>Informasi Kontak Redaksi</h3>
                     <div class="contact-details">
                         <div class="contact-item">
@@ -219,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="contact-form">
+                <div class="contact-form" data-aos="fade-left" data-aos-delay="200">
                     <h3>Kirim Pesan ke Redaksi</h3>
                     <form>
                         <div class="form-group">
@@ -708,7 +708,6 @@
                 width: 35px;
                 height: 35px;
             }
-            
             .member-contact {
                 justify-content: center;
             }
@@ -716,66 +715,6 @@
             .breadcrumb {
                 flex-wrap: wrap;
                 gap: 5px;
-            }
-            @media (max-width: 1024px) {
-            .about-section, .mission-vision, .contact-grid {
-                gap: 30px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            /* Logo di tengah pada mobile */
-            header {
-                flex-direction: column;
-                padding: 10px 15px;
-            }
-            
-            .logo-container {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-            
-            .logo {
-                height: 40px; /* Ukuran lebih kecil di mobile */
-            }
-            
-            .nav-container {
-                width: 100%;
-                justify-content: flex-end;
-            }
-            
-            .hamburger {
-                display: flex;
-            }
-            
-            .nav-menu {
-                display: none;
-            }
-            
-            .about-section, .mission-vision, .contact-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .page-title {
-                font-size: 2rem;
-            }
-            
-            .about-content h2, .section-title {
-                font-size: 1.7rem;
-            }
-            
-            .contact-section {
-                padding: 30px 20px;
-            }
-            
-            .dropdown-menu {
-                width: 180px;
-                right: 10px;
-            }
-            
-            .team-grid, .values-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
             }
         }
 

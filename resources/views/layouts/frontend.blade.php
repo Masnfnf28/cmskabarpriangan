@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title', config('app.name', 'Laravel')) - Priangan TV</title>
+    <title>@yield('title', 'Priangan TV')</title>
+    <link rel="icon" href="{{ asset('faviconremove.png') }}" type="image/png">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -13,6 +14,9 @@
     <!-- Styles & Scripts dari Vite -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     {{-- Kode CSS untuk Tampilan Frontend --}}
     <style>
@@ -135,6 +139,10 @@
             color: #ffffff;
         }
 
+        .mobile-menu a.active-page {
+            display: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .desktop-nav {
@@ -185,11 +193,11 @@
             </button>
         </div>
         <div class="mobile-menu" id="mobile-menu">
-            <a href="{{ url('/') }}">Beranda</a>
-            <a href="{{ route('layanan-kami') }}">Layanan Kami</a>
-            <a href="{{ route('advertorial.page') }}">Advertorial</a>
-            <a href="{{ route('redaksi') }}">Redaksi</a>
-            <a href="{{ route('tentang-kami') }}">Tentang Kami</a>
+            <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'active-page' : '' }}">Beranda</a>
+            <a href="{{ route('layanan-kami') }}" class="{{ request()->is('layanan-kami') ? 'active-page' : '' }}">Layanan Kami</a>
+            <a href="{{ route('advertorial.page') }}" class="{{ request()->is('advertorial') || request()->is('advertorial/*') ? 'active-page' : '' }}">Advertorial</a>
+            <a href="{{ route('redaksi') }}" class="{{ request()->is('redaksi') ? 'active-page' : '' }}">Redaksi</a>
+            <a href="{{ route('tentang-kami') }}" class="{{ request()->is('tentang-kami') ? 'active-page' : '' }}">Tentang Kami</a>
         </div>
     </nav>
 
@@ -276,14 +284,25 @@
             <!-- Footer Bottom -->
             <div style="border-top: 1px solid rgba(252, 163, 17, 0.3); padding-top: 1.5rem; text-align: center;">
                 <p style="color: #e5e7eb; font-size: 0.9rem; margin: 0;">
-                    &copy; {{ date('Y') }} <strong style="color: #fca311;">Priangan TV</strong>. All rights reserved. | Developed with ❤️
+                    &copy; {{ date('Y') }} <strong style="color: #fca311;">Priangan TV</strong>. All rights reserved. | Developed By Peserta KKI LP3I Tasikmalaya
                 </p>
             </div>
         </div>
     </footer>
 
+    <!-- AOS Animation Library -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
     <!-- JavaScript -->
     <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true,
+            offset: 100
+        });
+
         // Hamburger menu toggle
         document.addEventListener('DOMContentLoaded', function() {
             const hamburgerBtn = document.getElementById('hamburger-btn');

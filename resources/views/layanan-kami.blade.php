@@ -511,8 +511,8 @@
     <main class="container">
         <!-- SERVICES OVERVIEW -->
         <section class="services-overview">
-            <h2 class="section-title">Solusi Media Terpadu</h2>
-            <p class="overview-text">
+            <h2 class="section-title" data-aos="fade-up">Solusi Media Terpadu</h2>
+            <p class="overview-text" data-aos="fade-up" data-aos-delay="100">
                 Kami menyediakan berbagai layanan media yang komprehensif untuk membantu bisnis dan organisasi
                 meningkatkan visibilitas, membangun reputasi, dan mencapai tujuan komunikasi mereka.
                 Dengan tim profesional yang berpengalaman, kami siap mendukung kesuksesan Anda.
@@ -521,10 +521,10 @@
 
         <!-- MAIN SERVICES -->
         <section class="main-services">
-            <h2 class="section-title">Layanan Unggulan Kami</h2>
+            <h2 class="section-title" data-aos="fade-up">Layanan Unggulan Kami</h2>
             <div class="services-grid">
                 <!-- Service 1 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-icon">🎬</div>
                     <h3 class="service-title">Penawaran Live Streaming</h3>
                     <ul class="service-features">
@@ -539,7 +539,7 @@
                 </div>
 
                 <!-- Service 2 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-icon">🎥</div>
                     <h3 class="service-title">Penawaran Podcast</h3>
                     <ul class="service-features">
@@ -554,7 +554,7 @@
                 </div>
 
                 <!-- Service 3 -->
-                <div class="service-card">
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-icon">📊</div>
                     <h3 class="service-title">Penawaran Iklan</h3>
                     <ul class="service-features">
@@ -572,10 +572,10 @@
 
         <!-- PRICING SECTION -->
         <section class="pricing-section">
-            <h2 class="section-title">Paket Layanan</h2>
+            <h2 class="section-title" data-aos="fade-up">Paket Layanan</h2>
             <div class="pricing-grid">
                 <!-- Basic Plan -->
-                <div class="pricing-card">
+                <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Paket Dasar</h3>
                         <div class="pricing-price">Rp 5JT</div>
@@ -593,7 +593,7 @@
                 </div>
 
                 <!-- Professional Plan -->
-                <div class="pricing-card popular">
+                <div class="pricing-card popular" data-aos="zoom-in" data-aos-delay="200">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Paket Profesional</h3>
                         <div class="pricing-price">Rp 15JT</div>
@@ -611,7 +611,7 @@
                 </div>
 
                 <!-- Enterprise Plan -->
-                <div class="pricing-card">
+                <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Paket Enterprise</h3>
                         <div class="pricing-price">Rp 35JT</div>
@@ -632,24 +632,24 @@
 
         <!-- PROCESS SECTION -->
         <section class="process-section">
-            <h2 class="section-title">Proses Kerja Kami</h2>
+            <h2 class="section-title" data-aos="fade-up">Proses Kerja Kami</h2>
             <div class="process-steps">
-                <div class="process-step">
+                <div class="process-step" data-aos="flip-left" data-aos-delay="100">
                     <div class="step-icon">🔍</div>
                     <h3 class="step-title">Konsultasi & Analisis</h3>
                     <p>Memahami kebutuhan dan tujuan klien melalui diskusi mendalam dan analisis kebutuhan.</p>
                 </div>
-                <div class="process-step">
+                <div class="process-step" data-aos="flip-left" data-aos-delay="200">
                     <div class="step-icon">📋</div>
                     <h3 class="step-title">Perencanaan Strategi</h3>
                     <p>Menyusun rencana dan strategi yang disesuaikan dengan tujuan dan anggaran klien.</p>
                 </div>
-                <div class="process-step">
+                <div class="process-step" data-aos="flip-left" data-aos-delay="300">
                     <div class="step-icon">🎬</div>
                     <h3 class="step-title">Eksekusi & Produksi</h3>
                     <p>Melaksanakan rencana dengan tim profesional dan teknologi terbaik.</p>
                 </div>
-                <div class="process-step">
+                <div class="process-step" data-aos="flip-left" data-aos-delay="400">
                     <div class="step-icon">📊</div>
                     <h3 class="step-title">Monitoring & Evaluasi</h3>
                     <p>Memantau hasil dan melakukan evaluasi untuk optimasi berkelanjutan.</p>
@@ -659,9 +659,9 @@
 
         <!-- CASE STUDIES -->
         <section class="case-studies">
-            <h2 class="section-title">Studi Kasus</h2>
+            <h2 class="section-title" data-aos="fade-up">Studi Kasus</h2>
             <div class="case-grid">
-                <div class="case-card">
+                <div class="case-card" data-aos="fade-right" data-aos-delay="100">
                     <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
                         alt="Case Study 1" class="case-image">
                     <div class="case-content">
@@ -675,7 +675,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="case-card">
+                <div class="case-card" data-aos="fade-left" data-aos-delay="200">
                     <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
                         alt="Case Study 2" class="case-image">
                     <div class="case-content">
@@ -692,7 +692,7 @@
         </section>
 
         <!-- CTA SECTION -->
-        <section class="cta-section">
+        <section class="cta-section" data-aos="zoom-in">
             <h2 class="cta-title">Siap Meningkatkan Bisnis Anda?</h2>
             <p class="cta-text">
                 Mari berdiskusi tentang bagaimana layanan kami dapat membantu mencapai tujuan komunikasi dan bisnis

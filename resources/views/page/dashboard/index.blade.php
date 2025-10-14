@@ -1,7 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
         <h2
-            class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2">
+            class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2"
+            data-aos="fade-down">
             <span>📈</span> Dashboard Analitik Dinamis
         </h2>
     </x-slot>
@@ -12,24 +13,28 @@
             {{-- RINGKASAN STATISTIK --}}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <div
-                    class="bg-gradient-to-br from-blue-600 to-indigo-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                    class="bg-gradient-to-br from-blue-600 to-indigo-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300"
+                    data-aos="fade-up" data-aos-delay="100">
                     <p class="text-lg opacity-90 mb-1">Total Konten</p>
                     <h1 class="text-4xl font-bold">{{ $totalKonten }}</h1>
                 </div>
                 <div
-                    class="bg-gradient-to-br from-emerald-500 to-green-400 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                    class="bg-gradient-to-br from-emerald-500 to-green-400 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300"
+                    data-aos="fade-up" data-aos-delay="200">
                     <p class="text-lg opacity-90 mb-1">Tahun Aktif</p>
                     <h1 class="text-4xl font-bold">{{ now()->year }}</h1>
                 </div>
                 <div
-                    class="bg-gradient-to-br from-fuchsia-500 to-pink-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300">
+                    class="bg-gradient-to-br from-fuchsia-500 to-pink-500 text-white p-6 rounded-2xl shadow-xl hover:scale-105 transform transition-all duration-300"
+                    data-aos="fade-up" data-aos-delay="300">
                     <p class="text-lg opacity-90 mb-1">Total Aktivitas Tahunan</p>
                     <h1 class="text-4xl font-bold">{{ collect($dataPerBulan)->sum() }}</h1>
                 </div>
             </div>
 
             {{-- GRAFIK & LAPORAN BULANAN --}}
-            <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 transition-all duration-300">
+            <div class="bg-white dark:bg-gray-800 shadow-xl rounded-3xl p-6 transition-all duration-300"
+                data-aos="zoom-in" data-aos-delay="400">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-3">
                     <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 flex items-center gap-2">
                         🥧 Distribusi Konten per Bulan

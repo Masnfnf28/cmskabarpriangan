@@ -43,10 +43,10 @@
 
     <x-slot name="header">
         <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight" data-aos="fade-right">
                 {{ __('Content Management') }}
             </h2>
-            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto" data-aos="fade-left">
                 <form method="GET" action="{{ route('konten.index') }}" class="relative w-full sm:w-64">
                     <input type="text" name="search" placeholder="Cari konten..." value="{{ request('search') }}"
                         class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
@@ -66,7 +66,7 @@
             @if (session('success'))
                 <div id="alert-success"
                     class="flex items-center p-4 mb-4 text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400"
-                    role="alert">
+                    role="alert" data-aos="fade-down">
                     <i class="fas fa-check-circle flex-shrink-0 w-4 h-4"></i>
                     <div class="ms-3 text-sm font-medium">{{ session('success') }}</div>
                     <button type="button" onclick="document.getElementById('alert-success').style.display='none'"
@@ -77,7 +77,7 @@
             @if (session('error'))
                 <div id="alert-error"
                     class="flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
-                    role="alert">
+                    role="alert" data-aos="fade-down">
                     <i class="fas fa-exclamation-triangle flex-shrink-0 w-4 h-4"></i>
                     <div class="ms-3 text-sm font-medium">{{ session('error') }}</div>
                     <button type="button" onclick="document.getElementById('alert-error').style.display='none'"
@@ -92,7 +92,8 @@
                     <div onclick="openDetailModal(this)" data-judul="{{ $k->judul }}"
                         data-caption="{{ $k->caption }}" data-gambar="{{ asset('storage/' . $k->gambar) }}"
                         data-tanggal="{{ \Carbon\Carbon::parse($k->tanggal)->isoFormat('D MMMM YYYY') }}"
-                        class="cursor-pointer group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 hover:shadow-xl">
+                        class="cursor-pointer group relative bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:-translate-y-1 transition-all duration-300 hover:shadow-xl"
+                        data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
 
                         <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}"
                             class="w-full h-48 object-cover">
@@ -128,7 +129,7 @@
                         </div>
                     </div>
                 @empty
-                    <div class="col-span-full text-center py-16 text-gray-500 dark:text-gray-400">
+                    <div class="col-span-full text-center py-16 text-gray-500 dark:text-gray-400" data-aos="fade-up">
                         <i class="fas fa-box-open fa-3x mb-4"></i>
                         <h3 class="text-xl font-semibold">Tidak ada konten ditemukan</h3>
                         <p>Silakan tambahkan konten baru.</p>

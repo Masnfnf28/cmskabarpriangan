@@ -4,10 +4,10 @@
 <main class="container">
     <!-- ABOUT SECTION -->
     <section class="about-section">
-        <div class="about-image">
+        <div class="about-image" data-aos="fade-right" data-aos-duration="1000">
             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Tentang Kami">
         </div>
-        <div class="about-content">
+        <div class="about-content" data-aos="fade-left" data-aos-duration="1000">
             <h2>Siapa Kami</h2>
             <p>Priangan TV merupakan media TV stream dari jejaring Kabar Priangan Network. Priangan TV memberikan informasi dan edukasi di wilayah Priangan Timur, seperti Tasikmalaya, Ciamis, Garut, Banjar, Pangandaran, dan Sumedang.
             </p>
@@ -17,13 +17,13 @@
 
     <!-- MISSION & VISION -->
     <section class="mission-vision">
-        <div class="mission">
+        <div class="mission" data-aos="fade-up" data-aos-delay="100">
             <h3>Misi Kami</h3>
             <p>Menyajikan informasi yang akurat, aktual, dan berimbang kepada masyarakat dengan mengedepankan prinsip-prinsip jurnalisme yang bertanggung jawab.</p>
             <p>Membangun kesadaran kritis masyarakat melalui konten yang mendidik, menginspirasi, dan memberdayakan.</p>
             <p>Menjadi platform yang inklusif dan dapat diakses oleh semua kalangan dengan menyajikan berita dalam format yang mudah dipahami.</p>
         </div>
-        <div class="vision">
+        <div class="vision" data-aos="fade-up" data-aos-delay="200">
             <h3>Visi Kami</h3>
             <p>Menjadi media digital terdepan di Indonesia yang dikenal karena kredibilitas, inovasi, dan dampak positifnya bagi masyarakat.</p>
             <p>Mendorong terciptanya masyarakat yang terinformasi dengan baik dan mampu mengambil keputusan berdasarkan fakta dan data yang akurat.</p>
@@ -33,23 +33,23 @@
 
     <!-- VALUES -->
     <section class="values-section">
-        <h2 class="section-title">Nilai-Nilai Kami</h2>
+        <h2 class="section-title" data-aos="fade-up">Nilai-Nilai Kami</h2>
         <div class="values-grid">
-            <div class="value-card">
+            <div class="value-card" data-aos="zoom-in" data-aos-delay="100">
                 <div class="value-icon">
                     ✓
                 </div>
                 <h3 class="value-title">Integritas</h3>
                 <p>Kami selalu mengutamakan kejujuran, transparansi, dan akuntabilitas dalam setiap pemberitaan yang kami sajikan.</p>
             </div>
-            <div class="value-card">
+            <div class="value-card" data-aos="zoom-in" data-aos-delay="200">
                 <div class="value-icon">
                     ✓
                 </div>
                 <h3 class="value-title">Akurasi</h3>
                 <p>Setiap informasi yang kami berikan telah melalui proses verifikasi yang ketat untuk memastikan kebenarannya.</p>
             </div>
-            <div class="value-card">
+            <div class="value-card" data-aos="zoom-in" data-aos-delay="300">
                 <div class="value-icon">
                     ✓
                 </div>
@@ -60,10 +60,10 @@
     </section>
 
     <!-- CONTACT -->
-    <section class="contact-section">
+    <section class="contact-section" data-aos="fade-up">
         <h2 class="section-title">Hubungi Kami</h2>
         <div class="contact-grid">
-            <div class="contact-info">
+            <div class="contact-info" data-aos="fade-right" data-aos-delay="100">
                 <h3>Informasi Kontak</h3>
                 <div class="contact-details">
                     <div class="contact-item">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="contact-text">
                             <h4>Telepon</h4>
-                            <p>(021) 1234-5678</p>
+                            <p>(0265) 1234-5678</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
             </div>
-            <div class="contact-form">
+            <div class="contact-form" data-aos="fade-left" data-aos-delay="200">
                 <h3>Kirim Pesan</h3>
                 <form>
                     <div class="form-group">
@@ -685,5 +685,6 @@
                 font-size: 12px !important;
             }
         }
+    }
 </style>
 @endpush
