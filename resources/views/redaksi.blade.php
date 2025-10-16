@@ -31,12 +31,12 @@
                 <h3>Pimpinan Redaksi</h3>
                 <ul class="team-list">
                     <li>
-                        <span class="member-name">Mohammad Ridwan</span>
+                        <span class="member-name">Zulkarnaen F</span>
                         <span class="member-role">Pemimpin Redaksi</span>
                     </li>
                     <li>
                         <span class="member-name">Abub M Basit</span>
-                        <span class="member-role">Manager Redaksi</span>
+                        <span class="member-role">Manager Priangan TV</span>
                     </li>
                 </ul>
             </div>
@@ -74,11 +74,11 @@
             </div>
 
             <div class="department" data-aos="zoom-in" data-aos-delay="400">
-                <h3>Divisi Khusus</h3>
+                <h3>Divisi IT</h3>
                 <ul class="team-list">
                     <li>
                         <span class="member-name">Dian Maldini</span>
-                        <span class="member-role">IT</span>
+                        <span class="member-role"></span>
                     </li>
                 </ul>
             </div>
@@ -137,7 +137,7 @@
 
     /* Page Header */
     .page-header {
-        background: linear-gradient(135deg, #fca311 0%, #ffb74d 100%);
+        background: linear-gradient(135deg, #ffff5b 0%, #ffb74d 100%);
         color: rgb(0, 0, 0);
         padding: 60px 0;
         text-align: center;
@@ -184,7 +184,7 @@
         color: #004c75;
         font-size: 1.8rem;
         margin-bottom: 20px;
-        border-bottom: 2px solid #fca311;
+        border-bottom: 2px solid #ffff5b;
         padding-bottom: 10px;
     }
 
@@ -199,7 +199,7 @@
         background: #f8fafc;
         padding: 25px;
         border-radius: 8px;
-        border-left: 4px solid #fca311;
+        border-left: 4px solid #ffff5b;
     }
 
     .info-card h3 {
@@ -229,7 +229,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 3px;
-        background-color: #fca311;
+        background-color: #ffff5b;
     }
 
     .structure-grid {
@@ -243,7 +243,7 @@
         border-radius: 10px;
         padding: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        border-top: 4px solid #fca311;
+        border-top: 4px solid #ffff5b;
     }
 
     .department h3 {
@@ -273,7 +273,7 @@
     }
 
     .member-role {
-        color: #fca311;
+        color: #ffff5b;
         font-size: 0.9rem;
         font-weight: 500;
     }
@@ -320,7 +320,7 @@
     }
 
     .member-position {
-        color: #fca311;
+        color: #ffff5b;
         font-weight: 500;
         margin-bottom: 10px;
         display: block;
@@ -346,13 +346,13 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fca311;
+        color: #ffff5b;
         text-decoration: none;
         transition: all 0.3s;
     }
 
     .contact-btn:hover {
-        background: #fca311;
+        background: #ffff5b;
         color: white;
     }
 
@@ -376,7 +376,7 @@
         background: #f8fafc;
         padding: 25px;
         border-radius: 8px;
-        border-top: 4px solid #fca311;
+        border-top: 4px solid #ffff5b;
     }
 
     .ethics-card h3 {
@@ -425,7 +425,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fca311;
+        color: #ffff5b;
         flex-shrink: 0;
     }
 
@@ -461,7 +461,7 @@
 
     .form-control:focus {
         outline: none;
-        border-color: #fca311;
+        border-color: #ffff5b;
     }
 
     textarea.form-control {
@@ -618,7 +618,7 @@
         footer {
             padding: 20px 0;
             margin-top: 30px;
-            background-color: #fca311;
+            background-color: #ffff5b;
             width: 100%;
         }
 

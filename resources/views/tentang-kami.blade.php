@@ -84,7 +84,7 @@
 
     /* Page Header */
     .page-header {
-        background: linear-gradient(135deg, #fca311 0%, #ffb74d 100%);
+        background: linear-gradient(135deg, #ffff5b 0%, #ffb74d 100%);
         color: rgb(0, 0, 0);
         padding: 60px 0;
         text-align: center;
@@ -154,7 +154,7 @@
         left: 0;
         width: 60px;
         height: 3px;
-        background-color: #fca311;
+        background-color: #ffff5b;
     }
 
     .about-content p {
@@ -176,7 +176,7 @@
         padding: 30px;
         border-radius: 10px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        border-top: 4px solid #fca311;
+        border-top: 4px solid #ffff5b;
     }
 
     .mission h3,
@@ -202,7 +202,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 3px;
-        background-color: #fca311;
+        background-color: #ffff5b;
     }
 
     /* Values Section */
@@ -223,7 +223,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         text-align: center;
         transition: transform 0.3s;
-        border-top: 4px solid #fca311;
+        border-top: 4px solid #ffff5b;
     }
 
     .value-card:hover {
@@ -239,7 +239,7 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto 20px;
-        color: #fca311;
+        color: #ffff5b;
         font-size: 1.8rem;
     }
 
@@ -290,7 +290,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        color: #fca311;
+        color: #ffff5b;
         flex-shrink: 0;
     }
 
@@ -326,7 +326,7 @@
 
     .form-control:focus {
         outline: none;
-        border-color: #fca311;
+        border-color: #ffff5b;
     }
 
     textarea.form-control {
@@ -536,7 +536,7 @@
             footer {
                 padding: 20px 0;
                 margin-top: 30px;
-                background-color: #fca311;
+                background-color: #ffff5b;
                 width: 100%;
             }
 

@@ -21,6 +21,11 @@ class AdvertorialController extends Controller
         if ($postId) {
             // 2. Ambil HANYA SATU post yang sesuai dari database
             $featuredPost = Konten::find($postId);
+            
+            // 3. Increment views counter saat postingan dikunjungi
+            if ($featuredPost) {
+                $featuredPost->increment('views');
+            }
         }
 
         // 3. Ambil post lain dengan paginasi

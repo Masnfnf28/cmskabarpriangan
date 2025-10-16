@@ -8,6 +8,8 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class KontenController extends Controller
 {
@@ -28,7 +30,7 @@ class KontenController extends Controller
             }
 
             $konten = $query->orderBy('tanggal', 'desc')
-                ->paginate(6)
+                ->paginate(8)
                 ->withQueryString();
 
             return view('page.konten.index', [
@@ -53,36 +55,17 @@ class KontenController extends Controller
             'gambar'  => [
                 'required',
                 'image',
-                'mimes:jpeg,png,jpg,gif',
-                'max:2048', // Batas maksimal 2MB
-                // Validasi kustom untuk mendukung ukuran Instagram, YouTube, dan Poster
+                'mimes:jpeg,png,jpg,gif,webp',
+                'max:5120', // Batas maksimal 5MB (akan dikompres ke WebP)
+                // Validasi kustom untuk hanya menerima gambar landscape
                 function (string $attribute, UploadedFile $value, \Closure $fail) {
                     $imageSize = getimagesize($value->getRealPath());
                     $width = $imageSize[0];
                     $height = $imageSize[1];
 
-                    // Hitung rasio aspek
-                    $ratio = $width / $height;
-
-                    // Daftar rasio yang diizinkan dengan toleransi ±0.1
-                    $allowedRatios = [
-                        1.0,    // Instagram Square (1:1)
-                        0.8,    // Instagram Portrait (4:5)
-                        0.5625, // Instagram Story/Reels (9:16)
-                        1.7778, // YouTube (16:9)
-                        0.7071, // Poster Portrait (A4: 1:1.414 atau 5:7)
-                    ];
-
-                    $isValid = false;
-                    foreach ($allowedRatios as $allowedRatio) {
-                        if (abs($ratio - $allowedRatio) <= 0.1) {
-                            $isValid = true;
-                            break;
-                        }
-                    }
-
-                    if (!$isValid) {
-                        $fail('Gambar harus memiliki rasio aspek yang sesuai: Instagram (1:1, 4:5, 9:16), YouTube (16:9), atau Poster (portrait).');
+                    // Validasi landscape: lebar harus lebih besar dari tinggi
+                    if ($width <= $height) {
+                        $fail('Gambar harus berukuran landscape (lebar lebih besar dari tinggi).');
                     }
                 },
             ],
@@ -92,7 +75,7 @@ class KontenController extends Controller
         $validatedData['caption'] = clean($request->input('caption'));
 
         if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('konten', 'public');
+            $path = $this->convertToWebP($request->file('gambar'), 'konten');
             $validatedData['gambar'] = $path;
         }
 
@@ -113,35 +96,16 @@ class KontenController extends Controller
             'gambar'  => [
                 'nullable', // Gambar opsional saat update
                 'image',
-                'mimes:jpeg,png,jpg,gif',
-                'max:2048', // Batas maksimal 2MB
+                'mimes:jpeg,png,jpg,gif,webp',
+                'max:5120', // Batas maksimal 5MB (akan dikompres ke WebP)
                 function (string $attribute, UploadedFile $value, \Closure $fail) {
                     $imageSize = getimagesize($value->getRealPath());
                     $width = $imageSize[0];
                     $height = $imageSize[1];
 
-                    // Hitung rasio aspek
-                    $ratio = $width / $height;
-
-                    // Daftar rasio yang diizinkan dengan toleransi ±0.1
-                    $allowedRatios = [
-                        1.0,    // Instagram Square (1:1)
-                        0.8,    // Instagram Portrait (4:5)
-                        0.5625, // Instagram Story/Reels (9:16)
-                        1.7778, // YouTube (16:9)
-                        0.7071, // Poster Portrait (A4: 1:1.414 atau 5:7)
-                    ];
-
-                    $isValid = false;
-                    foreach ($allowedRatios as $allowedRatio) {
-                        if (abs($ratio - $allowedRatio) <= 0.1) {
-                            $isValid = true;
-                            break;
-                        }
-                    }
-
-                    if (!$isValid) {
-                        $fail('Gambar harus memiliki rasio aspek yang sesuai: Instagram (1:1, 4:5, 9:16), YouTube (16:9), atau Poster (portrait).');
+                    // Validasi landscape: lebar harus lebih besar dari tinggi
+                    if ($width <= $height) {
+                        $fail('Gambar harus berukuran landscape (lebar lebih besar dari tinggi).');
                     }
                 },
             ],
@@ -154,7 +118,7 @@ class KontenController extends Controller
                 Storage::disk('public')->delete($konten->gambar);
             }
 
-            $path = $request->file('gambar')->store('konten', 'public');
+            $path = $this->convertToWebP($request->file('gambar'), 'konten');
             $validatedData['gambar'] = $path;
         }
 
@@ -179,5 +143,39 @@ class KontenController extends Controller
             Log::error('Error saat menghapus konten: ' . $e->getMessage());
             return back()->with('error', 'Gagal menghapus konten.');
         }
+    }
+
+    /**
+     * Konversi gambar yang diupload ke format WebP
+     * 
+     * @param UploadedFile $file
+     * @param string $directory
+     * @return string Path file yang disimpan
+     */
+    private function convertToWebP(UploadedFile $file, string $directory): string
+    {
+        // Generate nama file unik dengan ekstensi .webp
+        $filename = Str::random(40) . '.webp';
+        $path = $directory . '/' . $filename;
+        
+        // Buat direktori jika belum ada
+        $fullPath = storage_path('app/public/' . $directory);
+        if (!file_exists($fullPath)) {
+            mkdir($fullPath, 0755, true);
+        }
+        
+        // Inisialisasi ImageManager dengan GD driver
+        $manager = new ImageManager(new Driver());
+        
+        // Load gambar dari file yang diupload
+        $image = $manager->read($file->getRealPath());
+        
+        // Encode ke WebP format dengan kualitas 85%
+        $encoded = $image->toWebp(85);
+        
+        // Simpan ke storage
+        Storage::disk('public')->put($path, (string) $encoded);
+        
+        return $path;
     }
 }

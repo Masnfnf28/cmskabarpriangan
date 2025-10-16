@@ -4,13 +4,28 @@
 
 @push('styles')
 <style>
+    /* Top Section with Slideshow and Trending */
+    .top-section {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 15px;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    @media (min-width: 768px) {
+        .top-section {
+            grid-template-columns: 2fr 1fr;
+        }
+    }
+
     /* Slideshow */
     .slideshow-container {
-        max-width: 1200px;
         position: relative;
-        margin: 2rem auto;
         border-radius: 8px;
         overflow: hidden;
+        width: 100%;
     }
 
     .mySlides {
@@ -21,6 +36,7 @@
         width: 100%;
         height: 350px;
         object-fit: cover;
+        background-color: #000;
     }
 
     .prev,
@@ -105,15 +121,6 @@
         max-width: 1200px;
         margin: 2rem auto;
         padding: 0 15px;
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 40px;
-    }
-
-    @media (min-width: 1024px) {
-        .main-container {
-            grid-template-columns: 3fr 1fr;
-        }
     }
 
     .section-title {
@@ -126,8 +133,20 @@
     }
 
     /* Sidebar */
+    .sidebar {
+        background: #ffffff;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        height: fit-content;
+    }
+
+    .dark .sidebar {
+        background: #1f2937;
+    }
+
     .sidebar .trending-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 700;
         color: var(--secondary-color);
         border-bottom: 2px solid var(--secondary-color);
@@ -156,17 +175,27 @@
     .trending-number {
         color: #9ca3af;
         font-weight: 700;
-        font-size: 1.5rem;
+        font-size: 1rem;
         line-height: 1;
         min-width: 30px;
         text-align: center;
+        flex-shrink: 0;
+    }
+
+    .trending-item > div:nth-child(2) {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
     }
 
     .trending-link {
         color: var(--text-dark);
         text-decoration: none;
         font-weight: 600;
+        font-size: 0.9rem;
         transition: color 0.3s;
+        line-height: 1.4;
     }
 
     .dark .trending-link {
@@ -177,10 +206,26 @@
         color: var(--secondary-color);
     }
 
+    .trending-views {
+        color: #6b7280;
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .dark .trending-views {
+        color: #9ca3af;
+    }
+
+    .trending-views i {
+        font-size: 0.7rem;
+    }
+
     /* Post Grid */
     .post-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 25px;
     }
 
@@ -191,7 +236,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
         transition: transform 0.3s, box-shadow 0.3s;
     }
-
+2
     .dark .post-card {
         background: #1f2937;
     }
@@ -230,9 +275,17 @@
     }
 
     /* Responsive Design */
+    @media (max-width: 1024px) {
+        .post-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
-        .slideshow-container {
-            margin: 1rem;
+        .top-section {
+            margin: 1rem auto;
+            padding: 0 10px;
+            gap: 20px;
         }
 
         .mySlides img {
@@ -271,11 +324,11 @@
         }
 
         .trending-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .trending-number {
-            font-size: 1.2rem;
+            font-size: 1rem;
             min-width: 25px;
         }
     }
@@ -310,26 +363,54 @@
 @endpush
 
 @section('content')
-    @if ($konten && count($konten) > 0)
-        <div class="slideshow-container" data-aos="fade-down">
-            @foreach (collect($konten)->take(3) as $k)
-                <div class="mySlides fade">
-                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}">
-                        <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}">
-                        <div class="text">{{ $k->judul }}</div>
-                    </a>
+    <!-- Top Section: Slideshow & Trending -->
+    <div class="top-section">
+        <!-- Slideshow -->
+        <div>
+            @if ($konten && count($konten) > 0)
+                <div class="slideshow-container" data-aos="fade-right">
+                    @foreach (collect($konten)->take(3) as $k)
+                        <div class="mySlides fade">
+                            <a href="{{ route('advertorial.page', ['post' => $k->id]) }}">
+                                <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}">
+                                <div class="text">{{ $k->judul }}</div>
+                            </a>
+                        </div>
+                    @endforeach
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
                 </div>
-            @endforeach
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                <div style="text-align:center; margin-top: 1rem;">
+                    @foreach (collect($konten)->take(3) as $item)
+                        <span class="dot" onclick="currentSlide({{ $loop->iteration }})"></span>
+                    @endforeach
+                </div>
+            @endif
         </div>
-        <div style="text-align:center; margin-top: 1rem;">
-            @foreach (collect($konten)->take(3) as $item)
-                <span class="dot" onclick="currentSlide({{ $loop->iteration }})"></span>
-            @endforeach
-        </div>
-    @endif
 
+        <!-- Trending Sidebar -->
+        <aside class="sidebar" data-aos="fade-left">
+            <h3 class="trending-title">TRENDING</h3>
+            @forelse ($trending as $k)
+                <div class="trending-item" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
+                    <div class="trending-number">{{ $loop->iteration }}</div>
+                    <div>
+                        <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="trending-link"
+                            data-title="{{ $k->judul }}">
+                            {{ $k->judul }}
+                        </a>
+                        <div class="trending-views">
+                            <i class="fas fa-eye"></i> {{ number_format($k->views) }} views
+                        </div>
+                    </div>
+                </div>
+            @empty
+                <p class="text-sm text-gray-500">Belum ada konten trending.</p>
+            @endforelse
+        </aside>
+    </div>
+
+    <!-- Main Content: Postingan Terbaru -->
     <main class="main-container">
         <section class="content-main">
             <h2 class="section-title" data-aos="fade-right">Postingan Terbaru</h2>
@@ -337,7 +418,7 @@
                 @forelse ($konten as $k)
                     <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}"
-                            class="w-full h-40 object-cover">
+                            class="w-full h-48 object-cover">
                         <div class="post-card-content">
                             <h3 class="post-title line-clamp-2">{{ $k->judul }}</h3>
                             <div class="post-meta">
@@ -352,21 +433,6 @@
                 @endforelse
             </div>
         </section>
-
-        <aside class="sidebar" data-aos="fade-left">
-            <h3 class="trending-title">TRENDING</h3>
-            @forelse (collect($konten)->take(6) as $k)
-                <div class="trending-item" data-aos="fade-left" data-aos-delay="{{ $loop->index * 100 }}">
-                    <div class="trending-number">{{ $loop->iteration }}</div>
-                    <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="trending-link"
-                        data-title="{{ $k->judul }}">
-                        {{ $k->judul }}
-                    </a>
-                </div>
-            @empty
-                <p class="text-sm text-gray-500">Belum ada konten trending.</p>
-            @endforelse
-        </aside>
     </main>
 @endsection
 

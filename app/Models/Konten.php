@@ -15,6 +15,7 @@ class Konten extends Model
         'caption',
         'tanggal',
         'gambar',
+        'views',
     ];
     public function getGambarUrlAttribute()
     {
