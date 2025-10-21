@@ -30,6 +30,7 @@ class KontenController extends Controller
             }
 
             $konten = $query->orderBy('tanggal', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(8)
                 ->withQueryString();
 

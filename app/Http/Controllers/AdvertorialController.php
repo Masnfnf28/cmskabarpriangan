@@ -33,10 +33,12 @@ class AdvertorialController extends Controller
             // Jika ada featured post, ambil post lain kecuali featured
             $otherPosts = Konten::where('id', '!=', $featuredPost->id)
                 ->orderBy('tanggal', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(3);
         } else {
             // Jika tidak ada featured post (halaman pertama), tampilkan semua post
             $otherPosts = Konten::orderBy('tanggal', 'desc')
+                ->orderBy('id', 'desc')
                 ->paginate(3);
         }
 

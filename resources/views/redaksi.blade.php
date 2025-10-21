@@ -488,6 +488,12 @@
     }
 
     /* Responsive Design - SEMUA STYLING MOBILE DIPERTAHANKAN */
+    @media (max-width: 1200px) {
+        .container {
+            padding: 0 15px;
+        }
+    }
+
     @media (max-width: 1024px) {
 
         .contact-grid,
@@ -495,6 +501,18 @@
         .structure-grid,
         .info-grid {
             gap: 25px;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .redaksi-info h2 {
+            font-size: 1.7rem;
         }
     }
 

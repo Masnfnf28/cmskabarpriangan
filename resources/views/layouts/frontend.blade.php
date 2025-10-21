@@ -21,7 +21,7 @@
     {{-- Kode CSS untuk Tampilan Frontend --}}
     <style>
         :root {
-            --primary-color: #ffff5b;
+            --primary-color: #ffff37;
             --secondary-color: #004c75;
             --text-dark: #1f2937;
             --text-light: #f9fafb;
@@ -31,11 +31,12 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-dark);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             margin: 0;
             padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .dark body {
@@ -43,9 +44,43 @@
             color: var(--text-light);
         }
 
+        /* Style untuk link biru di konten/caption (bukan di card) */
+        .post-content a,
+        article .post-content a,
+        .featured-content-wrapper a {
+            color: #0066cc;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        .post-content a:hover,
+        article .post-content a:hover,
+        .featured-content-wrapper a:hover {
+            color: #004499;
+        }
+
+        .dark .post-content a,
+        .dark article .post-content a,
+        .dark .featured-content-wrapper a {
+            color: #3ea6ff;
+        }
+
+        .dark .post-content a:hover,
+        .dark article .post-content a:hover,
+        .dark .featured-content-wrapper a:hover {
+            color: #66b8ff;
+        }
+
+        /* Pastikan card link tidak terpengaruh */
+        .post-card,
+        .post-card *,
+        .trending-link {
+            text-decoration: none !important;
+        }
+
         /* Navigasi */
         .main-nav {
-            background-color: #ffff5b;
+            background-color: #ffff37;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             padding: 0.75rem 2rem;
             position: sticky;
@@ -118,7 +153,7 @@
             top: 100%;
             right: 1rem;
             width: 250px;
-            background-color: #ffff5b;
+            background-color: #ffff37;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transform: translateY(-10px);
@@ -192,6 +227,100 @@
                 width: 220px;
                 right: 0.5rem;
             }
+
+            .nav-logo img {
+                height: 35px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .mobile-menu {
+                width: 200px;
+            }
+
+            .nav-logo img {
+                height: 32px;
+            }
+        }
+
+        /* Footer Responsive */
+        @media (max-width: 768px) {
+            footer {
+                padding: 2rem 1rem 1rem !important;
+                margin-top: 2rem !important;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+
+            footer h3 {
+                font-size: 1.1rem !important;
+            }
+
+            footer h4 {
+                font-size: 1rem !important;
+            }
+
+            footer p, footer li {
+                font-size: 0.9rem !important;
+            }
+
+            footer img {
+                height: 40px !important;
+            }
+
+            footer a[style*="width: 40px"] {
+                width: 35px !important;
+                height: 35px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            footer {
+                padding: 1.5rem 0.75rem 1rem !important;
+            }
+
+            .footer-grid {
+                gap: 1.5rem !important;
+            }
+
+            footer h3 {
+                font-size: 1rem !important;
+            }
+
+            footer p, footer li {
+                font-size: 0.85rem !important;
+            }
+
+            footer img {
+                height: 35px !important;
+            }
+
+            footer a[style*="width: 40px"] {
+                width: 32px !important;
+                height: 32px !important;
+                font-size: 0.85rem !important;
+            }
+        }
+
+        @media (max-width: 360px) {
+            footer {
+                padding: 1.25rem 0.5rem 0.75rem !important;
+            }
+
+            footer h3 {
+                font-size: 0.95rem !important;
+            }
+
+            footer p, footer li {
+                font-size: 0.8rem !important;
+            }
+
+            footer img {
+                height: 30px !important;
+            }
         }
     </style>
 
@@ -233,13 +362,13 @@
 
     <!-- Footer -->
     <footer style="background-color: #004c75; color: white; margin-top: 4rem; padding: 3rem 2rem 1.5rem;">
-        <div style="max-width: 1200px; margin: 0 auto;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 15px;">
             <!-- Footer Content Grid -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 2rem;">
+            <div class="footer-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 2rem;">
 
                 <!-- About Section -->
                 <div>
-                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: #ffff5b;">Priangan TV</h3>
+                    <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; color: #ffff37;">Priangan TV</h3>
                     <p style="line-height: 1.8; color: #e5e7eb; margin-bottom: 1rem;">
                         Media informasi terpercaya yang menyajikan berita terkini, advertorial, dan konten berkualitas untuk masyarakat Priangan.
                     </p>
@@ -248,26 +377,26 @@
 
                 <!-- Quick Links -->
                 <div>
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff5b;">Menu</h4>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff37;">Menu</h4>
                     <ul style="list-style: none; padding: 0; margin: 0;">
                         <li style="margin-bottom: 0.75rem;">
-                            <a href="{{ url('/') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff5b'" onmouseout="this.style.color='#e5e7eb'">Beranda</a>
+                            <a href="{{ url('/') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff37'" onmouseout="this.style.color='#e5e7eb'">Beranda</a>
                         </li>
                         <li style="margin-bottom: 0.75rem;">
-                            <a href="{{ route('layanan-kami') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff5b'" onmouseout="this.style.color='#e5e7eb'">Layanan Kami</a>
+                            <a href="{{ route('layanan-kami') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff37'" onmouseout="this.style.color='#e5e7eb'">Layanan Kami</a>
                         </li>
                         <li style="margin-bottom: 0.75rem;">
-                            <a href="{{ route('advertorial.page') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff5b'" onmouseout="this.style.color='#e5e7eb'">Advertorial</a>
+                            <a href="{{ route('advertorial.page') }}" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff37'" onmouseout="this.style.color='#e5e7eb'">Advertorial</a>
                         </li>
                         <li style="margin-bottom: 0.75rem;">
-                            <a href="#" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff5b'" onmouseout="this.style.color='#e5e7eb'">Tentang Kami</a>
+                            <a href="#" style="color: #e5e7eb; text-decoration: none; transition: color 0.3s;" onmouseover="this.style.color='#ffff37'" onmouseout="this.style.color='#e5e7eb'">Tentang Kami</a>
                         </li>
                     </ul>
                 </div>
 
                 <!-- Contact Info -->
                 <div>
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff5b;">Kontak</h4>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff37;">Kontak</h4>
                     <ul style="list-style: none; padding: 0; margin: 0; color: #e5e7eb; line-height: 1.8;">
                         <li style="margin-bottom: 0.75rem; display: flex; align-items: start; gap: 0.5rem;">
                             <span>📧</span>
@@ -286,19 +415,19 @@
 
                 <!-- Social Media -->
                 <div>
-                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff5b;">Ikuti Kami</h4>
+                    <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; color: #ffff37;">Ikuti Kami</h4>
                     <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                         <a href="https://www.facebook.com/profile.php?id=61569031711597
-" style="width: 40px; height: 40px; background-color: #ffff5b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+" style="width: 40px; height: 40px; background-color: #ffff37; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://www.instagram.com/priangan_tv/" style="width: 40px; height: 40px; background-color: #ffff5b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <a href="https://www.instagram.com/priangan_tv/" style="width: 40px; height: 40px; background-color: #ffff37; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="https://www.youtube.com/@priangantv1999" style="width: 40px; height: 40px; background-color: #ffff5b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <a href="https://www.youtube.com/@priangantv1999" style="width: 40px; height: 40px; background-color: #ffff37; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                             <i class="fab fa-youtube"></i>
                         </a>
-                        <a href="https://www.tiktok.com/@priangan_tv" style="width: 40px; height: 40px; background-color: #ffff5b; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        <a href="https://www.tiktok.com/@priangan_tv" style="width: 40px; height: 40px; background-color: #ffff37; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #004c75; text-decoration: none; font-weight: bold; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                             <i class="fab fa-tiktok"></i>
                         </a>
                     </div>
@@ -311,7 +440,7 @@
             <!-- Footer Bottom -->
             <div style="border-top: 1px solid rgba(255, 255, 91, 0.3); padding-top: 1.5rem; text-align: center;">
                 <p style="color: #e5e7eb; font-size: 0.9rem; margin: 0;">
-                    &copy; {{ date('Y') }} <strong style="color: #ffff5b;">Priangan TV</strong>. All rights reserved. | Developed By Peserta KKI LP3I Tasikmalaya
+                    &copy; {{ date('Y') }} <strong style="color: #ffff37;">Priangan TV</strong>. All rights reserved. | Developed By Peserta KKI LP3I Tasikmalaya
                 </p>
             </div>
         </div>

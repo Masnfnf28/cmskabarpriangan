@@ -34,7 +34,7 @@
 
     .mySlides img {
         width: 100%;
-        height: 350px;
+        height: 450px;
         object-fit: cover;
         background-color: #000;
     }
@@ -196,6 +196,11 @@
         font-size: 0.9rem;
         transition: color 0.3s;
         line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     .dark .trending-link {
@@ -225,48 +230,91 @@
     /* Post Grid */
     .post-grid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 25px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px 16px;
+        margin-top: 24px;
     }
 
     .post-card {
-        background: #ffffff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        transition: transform 0.3s, box-shadow 0.3s;
-    }
-2
-    .dark .post-card {
-        background: #1f2937;
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
 
-    .post-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    .post-card-thumbnail {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f0f0f0;
+    }
+
+    .dark .post-card-thumbnail {
+        background: #2d2d2d;
+    }
+
+    .post-card-thumbnail img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.2s ease;
+    }
+
+    .post-card:hover .post-card-thumbnail img {
+        transform: scale(1.05);
     }
 
     .post-card-content {
-        padding: 1rem;
+        padding: 12px 0 0 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
     }
 
     .post-title {
-        font-size: 1.1rem;
+        font-size: 0.95rem;
         font-weight: 600;
-        margin-bottom: 0.5rem;
         line-height: 1.4;
+        color: #0f0f0f;
+        margin: 0;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .dark .post-title {
+        color: #f1f1f1;
+    }
+
+    .post-card:hover .post-title {
+        color: #065fd4;
+    }
+
+    .dark .post-card:hover .post-title {
+        color: #3ea6ff;
     }
 
     .post-meta {
         display: flex;
         align-items: center;
-        gap: 5px;
-        color: #6b7280;
+        gap: 4px;
+        color: #606060;
         font-size: 0.8rem;
     }
 
     .dark .post-meta {
-        color: #9ca3af;
+        color: #aaaaaa;
+    }
+
+    .post-meta i {
+        font-size: 0.75rem;
     }
 
     a {
@@ -275,9 +323,34 @@
     }
 
     /* Responsive Design */
+    @media (max-width: 1200px) {
+        .top-section,
+        .main-container {
+            max-width: 100%;
+            padding: 0 20px;
+        }
+
+        .post-grid {
+            gap: 18px 14px;
+        }
+    }
+
     @media (max-width: 1024px) {
         .post-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px 14px;
+        }
+
+        .top-section {
+            gap: 25px;
+        }
+
+        .mySlides img {
+            height: 380px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
         }
     }
 
@@ -289,7 +362,12 @@
         }
 
         .mySlides img {
-            height: 250px;
+            height: 320px;
+        }
+
+        .post-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px 12px;
         }
 
         .text {
@@ -314,11 +392,6 @@
             font-size: 1.5rem;
         }
 
-        .post-grid {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
-
         .sidebar {
             margin-top: 20px;
         }
@@ -334,21 +407,39 @@
     }
 
     @media (max-width: 480px) {
+        .top-section,
+        .main-container {
+            padding: 0 8px;
+        }
+
         .mySlides img {
-            height: 200px;
+            height: 260px;
+        }
+
+        .post-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
         }
 
         .text {
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 10px;
+        }
+
+        .prev,
+        .next {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
         }
 
         .section-title {
             font-size: 1.3rem;
+            margin-bottom: 1rem;
         }
 
         .post-title {
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .post-meta {
@@ -356,7 +447,79 @@
         }
 
         .trending-link {
+            font-size: 0.85rem;
+        }
+
+        .trending-number {
             font-size: 0.9rem;
+            min-width: 20px;
+        }
+
+        .sidebar {
+            padding: 15px;
+        }
+
+        .post-card-content {
+            padding: 10px 0 0 0;
+        }
+
+        .post-title {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 360px) {
+        .top-section,
+        .main-container {
+            padding: 0 5px;
+            margin: 0.75rem auto;
+        }
+
+        .mySlides img {
+            height: 220px;
+        }
+
+        .text {
+            font-size: 0.85rem;
+            padding: 8px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+        }
+
+        .post-title {
+            font-size: 0.9rem;
+        }
+
+        .trending-link {
+            font-size: 0.8rem;
+        }
+
+        .trending-title {
+            font-size: 0.9rem;
+        }
+
+        .sidebar {
+            padding: 12px;
+        }
+
+        .dot {
+            height: 8px;
+            width: 8px;
+            margin: 0 3px;
+        }
+
+        .post-card-content {
+            padding: 8px 0 0 0;
+        }
+
+        .post-title {
+            font-size: 0.85rem;
+        }
+
+        .post-card-thumbnail {
+            border-radius: 8px;
         }
     }
 </style>
@@ -417,10 +580,11 @@
             <div class="post-grid">
                 @forelse ($konten as $k)
                     <a href="{{ route('advertorial.page', ['post' => $k->id]) }}" class="post-card" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                        <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}"
-                            class="w-full h-48 object-cover">
+                        <div class="post-card-thumbnail">
+                            <img src="{{ asset('storage/' . $k->gambar) }}" alt="{{ $k->judul }}">
+                        </div>
                         <div class="post-card-content">
-                            <h3 class="post-title line-clamp-2">{{ $k->judul }}</h3>
+                            <h2 class="post-title">{{ $k->judul }}</h2>
                             <div class="post-meta">
                                 <i class="fas fa-calendar-alt"></i>
                                 <span>{{ \Carbon\Carbon::parse($k->tanggal)->format('d M Y') }}</span>

@@ -353,12 +353,36 @@
     }
 
     /* Responsive Design - SEMUA STYLING MOBILE DIPERTAHANKAN */
+    @media (max-width: 1200px) {
+        .container {
+            padding: 0 15px;
+        }
+
+        .about-section,
+        .mission-vision {
+            gap: 35px;
+        }
+    }
+
     @media (max-width: 1024px) {
 
         .about-section,
         .mission-vision,
         .contact-grid {
             gap: 30px;
+        }
+
+        .about-content h2,
+        .section-title {
+            font-size: 1.8rem;
+        }
+
+        .about-content p {
+            font-size: 1rem;
+        }
+
+        .values-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         }
     }
 
@@ -434,187 +458,162 @@
             gap: 5px;
         }
 
-        @media (max-width: 1024px) {
-
-            .about-section,
-            .mission-vision,
-            .contact-grid {
-                gap: 30px;
-            }
+        .container {
+            padding: 0 10px;
         }
 
-        @media (max-width: 768px) {
-
-            /* Logo di tengah pada mobile */
-            header {
-                flex-direction: column;
-                padding: 10px 15px;
-            }
-
-            .logo-container {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-
-            .logo {
-                height: 40px;
-                /* Ukuran lebih kecil di mobile */
-            }
-
-            .nav-container {
-                width: 100%;
-                justify-content: flex-end;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .nav-menu {
-                display: none;
-            }
-
-            .about-section,
-            .mission-vision,
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .page-title {
-                font-size: 2rem;
-            }
-
-            .about-content h2,
-            .section-title {
-                font-size: 1.7rem;
-            }
-
-            .contact-section {
-                padding: 30px 20px;
-            }
-
-            .dropdown-menu {
-                width: 180px;
-                right: 10px;
-            }
-
-            .team-grid,
-            .values-grid {
-                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            }
+        .about-content p {
+            font-size: 0.95rem;
         }
 
-        /* Tambahan untuk mobile yang sangat kecil */
-        @media (max-width: 360px) {
-            .container {
-                padding: 0 15px;
-            }
-
-            .about-content h2 {
-                font-size: 1.5rem;
-            }
-
-            .mission h3,
-            .vision h3 {
-                font-size: 1.3rem;
-            }
-
-            .contact-section {
-                padding: 20px 15px;
-            }
-
-            .value-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.5rem;
-            }
+        .mission,
+        .vision {
+            padding: 20px 15px;
         }
 
-        /* Footer Mobile Optimization */
-        @media (max-width: 768px) {
-            footer {
-                padding: 20px 0;
-                margin-top: 30px;
-                background-color: #ffff5b;
-                width: 100%;
-            }
-
-            .footer-container {
-                padding: 0 15px;
-            }
-
-            .social-icons {
-                gap: 12px;
-                margin: 0 0 15px 0;
-            }
-
-            .social-icon {
-                width: 45px;
-                height: 45px;
-                background-color: #000000;
-            }
-
-            .social-icon svg {
-                width: 20px;
-                height: 20px;
-            }
+        .mission h3,
+        .vision h3 {
+            font-size: 1.4rem;
         }
 
-        @media (max-width: 480px) {
-            footer {
-                padding: 20px 0;
-                margin-top: 30px;
-            }
+        .value-card {
+            padding: 20px 15px;
+        }
+    }
 
-            .social-icons {
-                gap: 10px;
-                margin: 0 0 12px 0;
-            }
-
-            .social-icon {
-                width: 40px;
-                height: 40px;
-            }
-
-            .social-icon svg {
-                width: 18px;
-                height: 18px;
-            }
-
-            .footer-container p {
-                font-size: 13px !important;
-            }
+    @media (max-width: 360px) {
+        .container {
+            padding: 0 8px;
         }
 
-        @media (max-width: 360px) {
-            footer {
-                padding: 18px 0;
-                margin-top: 25px;
-            }
+        .page-title {
+            font-size: 1.6rem;
+        }
 
-            .social-icons {
-                gap: 8px;
-                margin: 0 0 10px 0;
-            }
+        .about-content h2 {
+            font-size: 1.4rem;
+        }
 
-            .social-icon {
-                width: 38px;
-                height: 38px;
-            }
+        .about-content p {
+            font-size: 0.9rem;
+        }
 
-            .social-icon svg {
-                width: 16px;
-                height: 16px;
-            }
+        .section-title {
+            font-size: 1.3rem;
+        }
 
-            .footer-container {
-                padding: 0 10px;
-            }
+        .mission h3,
+        .vision h3 {
+            font-size: 1.2rem;
+        }
 
-            .footer-container p {
-                font-size: 12px !important;
-            }
+        .mission,
+        .vision {
+            padding: 18px 12px;
+        }
+
+        .contact-section {
+            padding: 20px 12px;
+        }
+
+        .value-icon {
+            width: 55px;
+            height: 55px;
+            font-size: 1.4rem;
+        }
+
+        .value-title {
+            font-size: 1.1rem;
+        }
+
+        .value-card {
+            padding: 18px 12px;
+        }
+    }
+
+    /* Footer Mobile Optimization */
+    @media (max-width: 768px) {
+        footer {
+            padding: 20px 0;
+            margin-top: 30px;
+            background-color: #ffff5b;
+            width: 100%;
+        }
+
+        .footer-container {
+            padding: 0 15px;
+        }
+
+        .social-icons {
+            gap: 12px;
+            margin: 0 0 15px 0;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background-color: #000000;
+        }
+
+        .social-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        footer {
+            padding: 20px 0;
+            margin-top: 30px;
+        }
+
+        .social-icons {
+            gap: 10px;
+            margin: 0 0 12px 0;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+        }
+
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .footer-container p {
+            font-size: 13px !important;
+        }
+    }
+
+    @media (max-width: 360px) {
+        footer {
+            padding: 18px 0;
+            margin-top: 25px;
+        }
+
+        .social-icons {
+            gap: 8px;
+            margin: 0 0 10px 0;
+        }
+
+        .social-icon {
+            width: 38px;
+            height: 38px;
+        }
+
+        .social-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .footer-container {
+            padding: 0 10px;
+        }
+
+        .footer-container p {
+            font-size: 12px !important;
         }
     }
 </style>

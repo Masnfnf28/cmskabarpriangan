@@ -15,7 +15,7 @@ class WelcomeController extends Controller
         // Ambil 8 data konten terbaru dari database, diurutkan berdasarkan tanggal dan id
         $kontenTerbaru = Konten::orderBy('tanggal', 'desc')
             ->orderBy('id', 'desc')
-            ->take(5)
+            ->take(50)
             ->get();
 
         // Ambil 6 konten trending berdasarkan jumlah views terbanyak

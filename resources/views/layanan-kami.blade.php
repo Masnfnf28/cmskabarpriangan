@@ -433,6 +433,35 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1200px) {
+            .container {
+                padding: 30px 15px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .services-grid,
+            .case-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .overview-text {
+                font-size: 1rem;
+            }
+        }
+
         @media (max-width: 768px) {
 
             .services-grid,
@@ -471,38 +500,121 @@
         }
 
         @media (max-width: 480px) {
+            .container {
+                padding: 25px 10px;
+            }
+
             .section-title {
-                font-size: 1.5rem;
+                font-size: 1.4rem;
+            }
+
+            .overview-text {
+                font-size: 0.95rem;
+                padding: 0 10px;
             }
 
             .service-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 1.8rem;
+                width: 65px;
+                height: 65px;
+                font-size: 1.6rem;
+            }
+
+            .service-title {
+                font-size: 1.2rem;
+            }
+
+            .service-features li {
+                font-size: 0.9rem;
             }
 
             .pricing-price {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+
+            .pricing-title {
+                font-size: 1.2rem;
             }
 
             .cta-title {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+
+            .cta-text {
+                font-size: 0.95rem;
             }
 
             .cta-btn {
                 padding: 12px 25px;
+                font-size: 0.95rem;
+            }
+
+            .step-title {
+                font-size: 1.1rem;
+            }
+
+            .case-title {
+                font-size: 1.2rem;
+            }
+
+            .service-card,
+            .pricing-card,
+            .process-step,
+            .case-content {
+                padding: 25px 18px;
             }
         }
 
         @media (max-width: 360px) {
             .container {
-                padding: 20px 15px;
+                padding: 20px 8px;
+            }
+
+            .section-title {
+                font-size: 1.3rem;
+            }
+
+            .overview-text {
+                font-size: 0.9rem;
+            }
+
+            .service-icon {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .service-title {
+                font-size: 1.1rem;
+            }
+
+            .service-features li {
+                font-size: 0.85rem;
+            }
+
+            .pricing-price {
+                font-size: 1.6rem;
+            }
+
+            .cta-title {
+                font-size: 1.3rem;
+            }
+
+            .cta-text {
+                font-size: 0.9rem;
             }
 
             .service-card,
             .pricing-card,
             .process-step {
-                padding: 25px 15px;
+                padding: 20px 12px;
+            }
+
+            .case-content {
+                padding: 20px 15px;
+            }
+
+            .cta-section {
+                padding: 30px 15px;
             }
         }
     </style>

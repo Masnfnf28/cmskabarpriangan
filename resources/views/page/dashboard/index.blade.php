@@ -1,10 +1,20 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2
-            class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2"
-            data-aos="fade-down">
-            <span>📈</span> Dashboard Analitik Dinamis
-        </h2>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3" data-aos="fade-down">
+            <h2 class="font-semibold text-2xl text-gray-800 dark:text-gray-100 leading-tight tracking-wide flex items-center gap-2">
+                <span>📈</span> Dashboard Analitik Dinamis
+            </h2>
+            <div class="flex items-center gap-4 text-sm">
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">📅 Hari & Tanggal</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-100" id="currentDate">Loading...</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-gray-500 dark:text-gray-400">🕐 Waktu</p>
+                    <p class="font-semibold text-gray-800 dark:text-gray-100 tabular-nums" id="currentTime">00:00:00</p>
+                </div>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-10 bg-gray-50 dark:bg-gray-900 min-h-screen transition-all duration-300">
@@ -80,6 +90,39 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // FUNGSI TANGGAL DAN WAKTU REALTIME
+                function updateDateTime() {
+                    const now = new Date();
+                    
+                    // Array nama hari dan bulan dalam Bahasa Indonesia
+                    const hariIndo = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+                    const bulanIndo = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                                       'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+                    
+                    // Format tanggal: Hari, DD Bulan YYYY
+                    const hari = hariIndo[now.getDay()];
+                    const tanggal = now.getDate();
+                    const bulan = bulanIndo[now.getMonth()];
+                    const tahun = now.getFullYear();
+                    const dateString = `${hari}, ${tanggal} ${bulan} ${tahun}`;
+                    
+                    // Format waktu: HH:MM:SS
+                    const jam = String(now.getHours()).padStart(2, '0');
+                    const menit = String(now.getMinutes()).padStart(2, '0');
+                    const detik = String(now.getSeconds()).padStart(2, '0');
+                    const timeString = `${jam}:${menit}:${detik}`;
+                    
+                    // Update elemen HTML
+                    document.getElementById('currentDate').textContent = dateString;
+                    document.getElementById('currentTime').textContent = timeString;
+                }
+                
+                // Update pertama kali
+                updateDateTime();
+                
+                // Update setiap detik
+                setInterval(updateDateTime, 1000);
+
                 const ctx = document.getElementById('kontenChart').getContext('2d');
 
                 const bulanLabels = @json($bulanLabels);
